@@ -3,6 +3,7 @@ package com.example.objectanimator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.os.Bundle;
@@ -17,13 +18,10 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     ImageView imageView;
-    Button button;
     ObjectAnimator objectAnimator;
     //Path p;
-    float x = 450;
-    float y = 700;
-    int dx = 40;
-    int dy = 40;
+    int dx = 20;
+    int dy = 20;
     Timer timer = new Timer();
     //boolean tiltedRight = false;
     float[] tiltVals = new float[2];
@@ -32,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
 
     Handler handler = new Handler();
 
+    float screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+    float screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels - 500; // platform height is 500
+
+    float x = screenWidth / 2;
+    float y = screenHeight / 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         gyroscope = new Gyroscope(this);
 
         imageView = (ImageView) findViewById(R.id.block);
-        button = (Button) findViewById(R.id.button);
 
         //Path p = new Path();
         //p.addCircle(500, 500, 200, Path.Direction.CCW);
@@ -154,16 +156,16 @@ public class MainActivity extends AppCompatActivity {
 
         //objectAnimator.start();
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //objectAnimator.setDuration(100); // 4 seconds
-                //objectAnimator = ObjectAnimator.ofFloat(imageView, "y", 300);
-                //objectAnimator.setDuration(2000);
-                //objectAnimator.start();
-                System.out.println("button");
-            }
-        });
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //objectAnimator.setDuration(100); // 4 seconds
+//                //objectAnimator = ObjectAnimator.ofFloat(imageView, "y", 300);
+//                //objectAnimator.setDuration(2000);
+//                //objectAnimator.start();
+//                System.out.println("button");
+//            }
+//        });
     }
 
     public void moveRight() {
@@ -174,9 +176,15 @@ public class MainActivity extends AppCompatActivity {
         p.rLineTo(dx, 0);
         //p.moveTo(x, y);
         objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(600);
+        objectAnimator.setDuration(2000);
 
         objectAnimator.start();
+
+        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
+            x = screenWidth / 2;
+            y = screenHeight / 2;
+            p.moveTo(x, y);
+        }
 
     }
 
@@ -188,9 +196,14 @@ public class MainActivity extends AppCompatActivity {
         p.rLineTo(-1*dx, 0);
         //p.moveTo(x, y);
         objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(600);
+        objectAnimator.setDuration(2000);
 
         objectAnimator.start();
+        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
+            x = screenWidth / 2;
+            y = screenHeight / 2;
+            p.moveTo(x, y);
+        }
     }
 
     public void moveUp() {
@@ -201,9 +214,14 @@ public class MainActivity extends AppCompatActivity {
         p.rLineTo(0, dy);
         //p.moveTo(x, y);
         objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(600);
+        objectAnimator.setDuration(2000);
 
         objectAnimator.start();
+        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
+            x = screenWidth / 2;
+            y = screenHeight / 2;
+            p.moveTo(x, y);
+        }
     }
 
     public void moveDown() {
@@ -214,9 +232,14 @@ public class MainActivity extends AppCompatActivity {
         p.rLineTo(0, -1*dy);
         //p.moveTo(x, y);
         objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(600);
+        objectAnimator.setDuration(2000);
 
         objectAnimator.start();
+        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
+            x = screenWidth / 2;
+            y = screenHeight / 2;
+            p.moveTo(x, y);
+        }
     }
 
 
