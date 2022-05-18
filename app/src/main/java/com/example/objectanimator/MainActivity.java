@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,9 +24,14 @@ public class MainActivity extends AppCompatActivity {
     float y = 700;
     int dx = 40;
     int dy = 40;
-    boolean tiltedRight = false;
+    Timer timer = new Timer();
+    //boolean tiltedRight = false;
+    float[] tiltVals = new float[2];
 
     Gyroscope gyroscope;
+
+    Handler handler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,43 +59,93 @@ public class MainActivity extends AppCompatActivity {
         gyroscope.setListener(new Gyroscope.Listener() {
             @Override
             public void onRotation(float rx, float ry, float rz) {
-                if (ry > 1.0) { // tilt right 0.5 is what we want
-                    getWindow().getDecorView().setBackgroundColor(Color.GREEN);
-                    System.out.println("tilted");
-                    //tiltedRight = true;
-                    //p.moveTo(450, 700);
-                    //p.lineTo(600, 700);
-//                    p.addCircle(500, 500, 200, Path.Direction.CCW);
-                    //objectAnimator.start();
-                    moveRight();
-                }
-                if (ry < -1.0) { // tilt left
-                    System.out.println("tilted");
-                    getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
-                    //p.moveTo(450, 700);
-                    //p.lineTo(300, 700);
-//                    p.addCircle(500, 500, 200, Path.Direction.CCW);
-                    //objectAnimator.start();
-                    //moveLeft();
-                }
-                if (rz > 1.0) { // rotate left while flat
-                    System.out.println("tilted");
-                    getWindow().getDecorView().setBackgroundColor(Color.BLUE);
-                } if (rz < -1.0) { // rotate right while flat
-                    System.out.println("tilted");
-                    getWindow().getDecorView().setBackgroundColor(Color.GRAY);
-                }
-                if (rx > 1.0) { // tilt so it's facing you
-                    System.out.println("tilted");
-                     //moveDown();
-                    getWindow().getDecorView().setBackgroundColor(Color.MAGENTA);
-                } if (rx < -1.0) { // tilt so it's facing away
-                    getWindow().getDecorView().setBackgroundColor(Color.CYAN);
-                    System.out.println("tilted");
-                    //moveUp();
-                }
+                tiltVals[0] = rx;
+                tiltVals[1] = ry;
+//                if (ry > 1.0) { // tilt right 0.5 is what we want
+//                    getWindow().getDecorView().setBackgroundColor(Color.GREEN);
+//                    System.out.println("tilted");
+//                    //tiltedRight = true;
+//                    //p.moveTo(450, 700);
+//                    //p.lineTo(600, 700);
+////                    p.addCircle(500, 500, 200, Path.Direction.CCW);
+//                    //objectAnimator.start();
+//                    moveRight();
+//                }
+//                if (ry < -1.0) { // tilt left
+//                    System.out.println("tilted");
+//                    getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
+//                    //p.moveTo(450, 700);
+//                    //p.lineTo(300, 700);
+////                    p.addCircle(500, 500, 200, Path.Direction.CCW);
+//                    //objectAnimator.start();
+//                    //moveLeft();
+//                }
+//                if (rz > 1.0) { // rotate left while flat
+//                    System.out.println("tilted");
+//                    getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+//                } if (rz < -1.0) { // rotate right while flat
+//                    System.out.println("tilted");
+//                    getWindow().getDecorView().setBackgroundColor(Color.GRAY);
+//                }
+//                if (rx > 1.0) { // tilt so it's facing you
+//                    System.out.println("tilted");
+//                     //moveDown();
+//                    getWindow().getDecorView().setBackgroundColor(Color.MAGENTA);
+//                } if (rx < -1.0) { // tilt so it's facing away
+//                    getWindow().getDecorView().setBackgroundColor(Color.CYAN);
+//                    System.out.println("tilted");
+//                    //moveUp();
+//                }
             }
         });
+
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        float x = tiltVals[0];
+                        float y = tiltVals[1];
+                        if (y > 0.5) {
+                            moveRight();
+                        }
+                        if (y < -0.5) {
+                            moveLeft();
+                        }
+                        if (x > 0.5) {
+                            moveDown();
+                        }
+                        if (x < -0.5) {
+                            moveUp();
+                        }
+                        System.out.println("timer");
+                    }
+                });
+            }
+        }, 0, 20);
+
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                float x = tiltVals[0];
+//                float y = tiltVals[1];
+//                if (y > 1.0) {
+//                    moveRight();
+//                }
+//                if (y < -1.0) {
+//                    moveLeft();
+//                }
+//                if (x > 1.0) {
+//                    moveDown();
+//                }
+//                if (x < -1.0) {
+//                    moveUp();
+//                }
+//                System.out.println("timer");
+//            }
+//        },0,  500);
 
 
         //objectAnimator = ObjectAnimator.ofFloat(imageView, "x", 800);
@@ -118,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         p.rLineTo(dx, 0);
         //p.moveTo(x, y);
         objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(200);
+        objectAnimator.setDuration(600);
 
         objectAnimator.start();
 
@@ -132,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         p.rLineTo(-1*dx, 0);
         //p.moveTo(x, y);
         objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(200);
+        objectAnimator.setDuration(600);
 
         objectAnimator.start();
     }
@@ -145,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
         p.rLineTo(0, dy);
         //p.moveTo(x, y);
         objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(200);
+        objectAnimator.setDuration(600);
 
         objectAnimator.start();
     }
@@ -158,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         p.rLineTo(0, -1*dy);
         //p.moveTo(x, y);
         objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(200);
+        objectAnimator.setDuration(600);
 
         objectAnimator.start();
     }
