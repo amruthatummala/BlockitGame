@@ -1,15 +1,14 @@
 package com.example.objectanimator;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 
 import android.animation.ObjectAnimator;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.Timer;
@@ -18,10 +17,11 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     ImageView imageView;
+    //Block b;
     ObjectAnimator objectAnimator;
     //Path p;
-    int dx = 20;
-    int dy = 20;
+    int dx = 15;
+    int dy = 15;
     Timer timer = new Timer();
     //boolean tiltedRight = false;
     float[] tiltVals = new float[2];
@@ -31,7 +31,14 @@ public class MainActivity extends AppCompatActivity {
     Handler handler = new Handler();
 
     float screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-    float screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels - 500; // platform height is 500
+    float screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    double tempScreenHeight = Resources.getSystem().getDisplayMetrics().heightPixels; // platform height is ~500px 520
+    //float platformHeight = screenHeight - 500;
+    double platformHeight = tempScreenHeight - (3* 60 * Resources.getSystem().getDisplayMetrics().density); // 1669.0
+
+//    DisplayMetrics metrics = getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//    float logicalDensity = metrics.density;
+//    int px = (int) (dp * logicalDensity + 0.5);
 
     float x = screenWidth / 2;
     float y = screenHeight / 2;
@@ -41,12 +48,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        System.out.println("starting x is " + x); //540.0
+        System.out.println("starting y is " + y); // 1010.0
+        System.out.println("platform y is " + platformHeight);
+        System.out.println("screen height is " + screenHeight);
+        double temp = 57 * Resources.getSystem().getDisplayMetrics().density;
+        System.out.println("platform height is " + temp);
+
+
 //        p = new Path();
 //        p.moveTo(x, y);
 
         gyroscope = new Gyroscope(this);
 
-        imageView = (ImageView) findViewById(R.id.block);
+        //imageView = (ImageView) findViewById(R.id.block);
+        //Drawable d = getResources().getDrawable(R.id.square);
+        Block b1 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        Block b = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+
+        //imageView = b.getImageView();
+       ConstraintLayout c = (ConstraintLayout) findViewById(R.id.main);
+       c.addView(b.getImageView());
+       c.setConstraintSet(new ConstraintSet());
+
+//        b.setX(x);
+//        b.setY(y);
 
         //Path p = new Path();
         //p.addCircle(500, 500, 200, Path.Direction.CCW);
@@ -101,27 +127,39 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        float x = tiltVals[0];
-                        float y = tiltVals[1];
-                        if (y > 0.5) {
-                            moveRight();
+                        if (b.getX() > screenWidth || b.getX() < 0 || b.getY() < 0 || b.getY() > screenHeight) {
+                            b.reset();
+                            System.out.println("back to beginning");
                         }
-                        if (y < -0.5) {
-                            moveLeft();
+                        System.out.println("x is " + b.getX());
+                        System.out.println("y is " +b.getY());
+                        if (b.getY() < platformHeight + dy && b.getY() > platformHeight - dy) {
+                            System.out.println("roses");
+                            b.setY((float) platformHeight);
+                            cancel();
+                        } else {
+                            float rx = tiltVals[0];
+                            float ry = tiltVals[1];
+                            if (ry > 0.5) {
+                                b.moveRight(dx);
+                            }
+                            if (ry < -0.5) {
+                                b.moveLeft(dx);
+                            }
+                            if (rx > 0.5) {
+                                b.moveDown(dy);
+                            }
+                            if (rx < -0.5) {
+                                b.moveUp(dy);
+                            }
                         }
-                        if (x > 0.5) {
-                            moveDown();
-                        }
-                        if (x < -0.5) {
-                            moveUp();
-                        }
+
                         System.out.println("timer");
                     }
                 });
@@ -168,79 +206,82 @@ public class MainActivity extends AppCompatActivity {
 //        });
     }
 
-    public void moveRight() {
-        Path p = new Path();
-        p.moveTo(x, y);
-        x = x + dx;
-        y = y + 0;
-        p.rLineTo(dx, 0);
-        //p.moveTo(x, y);
-        objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(2000);
-
-        objectAnimator.start();
-
-        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
-            x = screenWidth / 2;
-            y = screenHeight / 2;
-            p.moveTo(x, y);
-        }
-
-    }
-
-    public void moveLeft() {
-        Path p = new Path();
-        p.moveTo(x, y);
-        x = x - dx;
-        y = y + 0;
-        p.rLineTo(-1*dx, 0);
-        //p.moveTo(x, y);
-        objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(2000);
-
-        objectAnimator.start();
-        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
-            x = screenWidth / 2;
-            y = screenHeight / 2;
-            p.moveTo(x, y);
-        }
-    }
-
-    public void moveUp() {
-        Path p = new Path();
-        p.moveTo(x, y);
-        x = x + 0;
-        y = y + dy;
-        p.rLineTo(0, dy);
-        //p.moveTo(x, y);
-        objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(2000);
-
-        objectAnimator.start();
-        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
-            x = screenWidth / 2;
-            y = screenHeight / 2;
-            p.moveTo(x, y);
-        }
-    }
-
-    public void moveDown() {
-        Path p = new Path();
-        p.moveTo(x, y);
-        x = x + 0;
-        y = y -dy;
-        p.rLineTo(0, -1*dy);
-        //p.moveTo(x, y);
-        objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-        objectAnimator.setDuration(2000);
-
-        objectAnimator.start();
-        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
-            x = screenWidth / 2;
-            y = screenHeight / 2;
-            p.moveTo(x, y);
-        }
-    }
+//    public void moveRight() {
+//        Path p = new Path();
+//        p.moveTo(x, y);
+//        x = x + dx;
+//        y = y + 0;
+//        p.rLineTo(dx, 0);
+//        //p.moveTo(x, y);
+//        objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
+//        objectAnimator.setDuration(2000);
+//
+//        objectAnimator.start();
+//
+////        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
+////            x = screenWidth / 2;
+////            y = screenHeight / 2;
+////            p.moveTo(x, y);
+////        }
+//
+//    }
+//
+//    public void moveLeft() {
+//        Path p = new Path();
+//        p.moveTo(x, y);
+//        x = x - dx;
+//        y = y + 0;
+//        p.rLineTo(-1*dx, 0);
+//        //p.moveTo(x, y);
+//        objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
+//        objectAnimator.setDuration(2000);
+//
+//        objectAnimator.start();
+////        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
+////            x = screenWidth / 2;
+////            y = screenHeight / 2;
+////            p.moveTo(x, y);
+////        }
+//    }
+//
+//    public void moveUp() {
+//        Path p = new Path();
+//        p.moveTo(x, y);
+//        x = x + 0;
+//        y = y + dy;
+//        p.rLineTo(0, dy);
+//        //p.moveTo(x, y);
+//        objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
+//        objectAnimator.setDuration(2000);
+//
+//        objectAnimator.start();
+////        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
+////            x = screenWidth / 2;
+////            y = screenHeight / 2;
+////            p.moveTo(x, y);
+////        }
+//    }
+//
+//    public void moveDown() {
+//        Path p = new Path();
+////        if (y == screenHeight) {
+////            System.out.println("platform reached");
+////        }
+//        p.moveTo(x, y);
+//        x = x + 0;
+//        y = y -dy;
+//        p.rLineTo(0, -1*dy);
+//        //p.moveTo(x, y);
+//        objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
+//        objectAnimator.setDuration(2000);
+//
+//        objectAnimator.start();
+////        if (x > screenWidth || x < 0 || y < 0 || y > screenHeight) {
+////            x = screenWidth / 2;
+////            y = screenHeight / 2;
+////            p.moveTo(x, y);
+////        }
+//    }
 
 
     @Override
