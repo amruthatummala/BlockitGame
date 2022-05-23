@@ -4,13 +4,17 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
-public class Block {
+import java.io.Serializable;
+
+public class Block {// implements Parcelable {
 
     private ImageView image;
     //private ObjectAnimator objectAnimator;
@@ -59,6 +63,49 @@ public class Block {
     public void setY(float ty) {
         y = ty;
         image.setY(y);
+    }
+
+    // ignore this method for now, part of my failed attempts to stack blocks...
+    public boolean stackBlock(Block other, int dx, int dy) {
+        int[] coordsOther = new int[2];
+        other.getImageView().getLocationOnScreen(coordsOther);
+        int[] coordsThis = new int[2];
+        getImageView().getLocationOnScreen(coordsThis);
+
+        float ygap = coordsOther[1] - coordsThis[1]; //+ this.getHeight();
+        System.out.println("height of this image view is " + this.getHeight());
+        System.out.println("height of other image view is " + other.getHeight());
+        float xgap = coordsOther[0] - coordsThis[0]; //+ this.getWidth();
+        System.out.println("xgap is " + xgap);
+        System.out.println("ygap is " + ygap);
+        System.out.println("dx is " + dx);
+        System.out.println("dy is " + dy);
+        if (Math.abs(ygap) <= dy) {
+            if (xgap > 0 && xgap <= dx) {
+                this.setX(other.getX() - this.getWidth());
+                this.setY(other.getY());
+            } else if (xgap < 0 && xgap >= -15) {
+                this.setX(other.getX() + this.getWidth());
+                this.setY(other.getY());
+            } else {
+                this.setY(other.getY() + this.getHeight());
+            }
+            return true;
+        }
+
+
+//        if (Math.abs(xgap) <= dx && Math.abs(ygap) <= dy) {
+//            System.out.println("stack block");
+//            if (xgap <= this.getWidth()/3) {
+//                this.setX(other.getX() - this.getWidth());
+//            } else if (xgap <= (2/3) * this.getWidth()) {
+//                this.setY(other.getY() + this.getHeight());
+//            } else {
+//                this.setX(other.getX() + other.getWidth());
+//            }
+//            return true;
+//        }
+        return false;
     }
 
     public int getWidth() {
@@ -135,5 +182,47 @@ public class Block {
     }
 
 
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel dest, int flags) {
+////        private ImageView image;
+////        private float defaultX;
+////        private float defaultY;
+////        private float x;
+////        private float y;
+//        dest.writeValue(image);
+//        dest.writeFloat(defaultX);
+//        dest.writeFloat(defaultY);
+//        dest.writeFloat(x);
+//        dest.writeFloat(y);
+//    }
+//    public static final Parcelable.Creator<Block> CREATOR
+//            = new Parcelable.Creator<Block>() {
+//        public Block createFromParcel(Parcel in) {
+//            return new Block(in);
+//        }
+//
+//        public Block[] newArray(int size) {
+//            return new Block[size];
+//        }
+//    };
+//
+//
+//    //        private ImageView image;
+////        private float defaultX;
+////        private float defaultY;
+////        private float x;
+////        private float y;
+//    private Block(Parcel in) {
+//        image = (ImageView) in.readValue(ImageView.class.getClassLoader());
+//        defaultX = in.readFloat();
+//        x = in.readFloat();
+//        y = in.readFloat();
+//        defaultY = in.readFloat();
+//    }
 
 }

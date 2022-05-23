@@ -6,10 +6,13 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +20,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public class Objective1 extends AppCompatActivity {
 
@@ -30,7 +34,8 @@ public class Objective1 extends AppCompatActivity {
     Timer timer = new Timer();
     //boolean tiltedRight = false;
     float[] tiltVals = new float[2];
-    Button button;
+    //Button button;
+    ArrayList<Block> newBlockList;
     Block b;
 
     Gyroscope gyroscope;
@@ -53,7 +58,7 @@ public class Objective1 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_objective1);
 
         System.out.println("starting x is " + x); //540.0
         System.out.println("starting y is " + y); // 1010.0
@@ -62,13 +67,13 @@ public class Objective1 extends AppCompatActivity {
         double temp = 57 * Resources.getSystem().getDisplayMetrics().density;
         System.out.println("platform height is " + temp);
 
-        button = (Button)findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openMainActivity();
-            }
-        });
+//        button = (Button) findViewById(R.id.button);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                openMainActivity();
+//            }
+//        });
 
 
 //        p = new Path();
@@ -84,7 +89,7 @@ public class Objective1 extends AppCompatActivity {
 
 
         ArrayList<Block> oldBlockList = new ArrayList<>();
-        ArrayList<Block> newBlockList = new ArrayList<>();
+        newBlockList = new ArrayList<>();
 
         oldBlockList.add(b1);
         oldBlockList.add(b2);
@@ -92,7 +97,7 @@ public class Objective1 extends AppCompatActivity {
         b = oldBlockList.get(0);
 
         //imageView = b.getImageView();
-        ConstraintLayout c = (ConstraintLayout) findViewById(R.id.main);
+        ConstraintLayout c = (ConstraintLayout) findViewById(R.id.objective1);
         c.addView(b.getImageView());
         c.setConstraintSet(new ConstraintSet());
 
@@ -167,12 +172,19 @@ public class Objective1 extends AppCompatActivity {
                         if (b.getY() < platformHeight + dy && b.getY() > platformHeight - dy) {
                             System.out.println("roses");
                             c.removeView(b.getImageView());
+                            b.reset();
                             newBlockList.add(b);
-                            System.out.println("Added block to newBlockList");
                             oldBlockList.remove(0);
+                            System.out.println("Added block to newBlockList");
                             System.out.println("Removed block from oldBlockList");
-                            b = oldBlockList.get(0);
-                            c.addView(b.getImageView());
+                            if (oldBlockList.size() == 0) {
+                                cancel();
+                                openMainActivity();
+                            } else {
+                                b = oldBlockList.get(0);
+                                c.addView(b.getImageView());
+                            }
+
                             //cancel();
                         }else {
                             float rx = tiltVals[0];
@@ -331,6 +343,31 @@ public class Objective1 extends AppCompatActivity {
 
     public void openMainActivity(){
         Intent openMainActivity = new Intent(this, MainActivity.class);
+        BlockList temp = new BlockList(newBlockList);
+//        Bundle b = new Bundle();
+//        b.putSerializable("serialzable", newBlockList);
+//        openMainActivity.putExtras(b);
+        //openMainActivity.putParcelableArrayListExtra("Blocks", newBlockList);
+//        SharedPreferences shref = PreferenceManager
+//                .getDefaultSharedPreferences(this.getApplicationContext());
+//        SharedPreferences.Editor prefsEditor = appSharedPrefs.edit();
+//        Gson gson = new Gson();
+//        String json = gson.toJson(newBlockList);
+//        prefsEditor.putString("MyObject", json);
+//        prefsEditor.commit();
+//        String key = "Key";
+//
+//        SharedPreferences.Editor editor;
+//
+//        Gson gson = new Gson();
+//        String json = gson.toJson(newBlockList);
+//
+//        editor = shref.edit();
+//        editor.remove(key).commit();
+//        editor.putString(key, json);
+//        editor.commit();
+        //Log.d("TAG","jsonCars = " + jsonCars);
+        //openMainActivity.putParcelableArrayListExtra("Blocks", newBlockList);
         startActivity(openMainActivity);
     }
 }
