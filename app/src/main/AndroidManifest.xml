@@ -17,6 +17,7 @@
         android:theme="@style/Theme.ObjectAnimator">
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
 
         <activity

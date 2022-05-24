@@ -2,6 +2,7 @@ package com.example.objectanimator;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
@@ -25,18 +26,26 @@ public class Block {// implements Parcelable {
 
     public Block(Drawable d, int w, int h, Context c, float screenHeight, float screenWidth) {
         image = new ImageView(c);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        //image.setAdjustViewBounds(true);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         image.setLayoutParams(params);
+        image.setScaleType(ImageView.ScaleType.FIT_XY);
         image.setImageDrawable(d);
         image.getLayoutParams().width = w;
         image.getLayoutParams().height = h;
+//        image.setMaxHeight(h);
+//        image.setMaxWidth(w);
 
-        Path p = new Path();
+        //image.setScaleType(ImageView.ScaleType.FIT_START);
+
+        //Path p = new Path();
         defaultX = screenWidth/2;
         defaultY = screenHeight/2;
         x = defaultX;
         y = defaultY;
-        p.moveTo(defaultX, defaultY);
+        image.setY(y);
+        image.setX(x);
+        //p.moveTo(defaultX, defaultY);
 
 //        ConstraintLayout con = new ConstraintLayout(c);
 //        con.addView(image);
@@ -63,6 +72,7 @@ public class Block {// implements Parcelable {
     public void setY(float ty) {
         y = ty;
         image.setY(y);
+
     }
 
     // ignore this method for now, part of my failed attempts to stack blocks...
@@ -71,27 +81,39 @@ public class Block {// implements Parcelable {
         other.getImageView().getLocationOnScreen(coordsOther);
         int[] coordsThis = new int[2];
         getImageView().getLocationOnScreen(coordsThis);
+        System.out.println("this x is " + getX() + " and this y is " + getY());
+        System.out.println("other x is " + other.getX() + " and other y is " + other.getY());
 
-        float ygap = coordsOther[1] - coordsThis[1]; //+ this.getHeight();
-        System.out.println("height of this image view is " + this.getHeight());
-        System.out.println("height of other image view is " + other.getHeight());
-        float xgap = coordsOther[0] - coordsThis[0]; //+ this.getWidth();
-        System.out.println("xgap is " + xgap);
-        System.out.println("ygap is " + ygap);
-        System.out.println("dx is " + dx);
-        System.out.println("dy is " + dy);
-        if (Math.abs(ygap) <= dy) {
-            if (xgap > 0 && xgap <= dx) {
-                this.setX(other.getX() - this.getWidth());
-                this.setY(other.getY());
-            } else if (xgap < 0 && xgap >= -15) {
-                this.setX(other.getX() + this.getWidth());
-                this.setY(other.getY());
-            } else {
-                this.setY(other.getY() + this.getHeight());
-            }
+        if (getY() <= other.getY() + dy && getY() >= other.getY() - dy) {
+            System.out.println("chocolate");
+            //setX(other.getX());
+
+            setY(other.getY() - getHeight());
+
             return true;
         }
+//
+//        float ygap = coordsOther[1] - coordsThis[1]; //+ this.getHeight();
+//        System.out.println("height of this image view is " + this.getHeight());
+//        System.out.println("height of other image view is " + other.getHeight());
+//        float xgap = coordsOther[0] - coordsThis[0]; //+ this.getWidth();
+//        System.out.println("xgap is " + xgap);
+//        System.out.println("ygap is " + ygap);
+//        System.out.println("dx is " + dx);
+//        System.out.println("dy is " + dy);
+//        if (Math.abs(ygap) <= dy) {
+//            if (xgap > 0 && xgap <= dx) {
+//                this.setX(other.getX() - this.getWidth());
+//                this.setY(other.getY());
+//            } else if (xgap < 0 && xgap >= -15) {
+//                this.setX(other.getX() + this.getWidth());
+//                this.setY(other.getY());
+//            } else {
+//                this.setY(other.getY() + this.getHeight());
+//            }
+//            return true;
+//        }
+        return false;
 
 
 //        if (Math.abs(xgap) <= dx && Math.abs(ygap) <= dy) {
@@ -105,15 +127,14 @@ public class Block {// implements Parcelable {
 //            }
 //            return true;
 //        }
-        return false;
     }
 
     public int getWidth() {
-        return image.getLayoutParams().width;
+        return image.getWidth();
     }
 
     public int getHeight() {
-        return image.getLayoutParams().height;
+        return image.getHeight();
     }
 
     public void moveRight(int dx) {
@@ -176,8 +197,8 @@ public class Block {// implements Parcelable {
 
     public void reset() {
         Path p = new Path();
-        x = defaultX;
-        y = defaultY;
+        setX(defaultX);
+        setY(defaultY);
         p.moveTo(defaultX, defaultY);
     }
 

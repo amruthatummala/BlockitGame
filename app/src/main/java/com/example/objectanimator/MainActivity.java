@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     double tempScreenHeight = Resources.getSystem().getDisplayMetrics().heightPixels; // platform height is ~500px 520
     //float platformHeight = screenHeight - 500;
 
-    float platformHeight = (float) tempScreenHeight - (3* 60 * Resources.getSystem().getDisplayMetrics().density); // 1669.0
+    float platformHeight = (float) tempScreenHeight - (60 * Resources.getSystem().getDisplayMetrics().density); // 1669.0
 
 //    DisplayMetrics metrics = getWindowManager().getDefaultDisplay().getMetrics(metrics);
 //    float logicalDensity = metrics.density;
@@ -62,6 +62,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        int statusBarHeight = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
+        platformHeight = platformHeight - statusBarHeight;
+        //float platformHeight = screenHeight - statusBarHeight;
+        Block tempB= new Block(ContextCompat.getDrawable(this, R.drawable.rectangle),(int) screenWidth , (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        tempB.setX(0);
+
+        Block platform= new Block(ContextCompat.getDrawable(this, R.drawable.rectangle),(int) screenWidth , (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        platform.setX(0);
+        platform.setY(platformHeight);
 //        Context context = getApplicationContext();
 //        Gson gson = new Gson();
 //        shref = context.getSharedPreferences("blocks", Context.MODE_PRIVATE);
@@ -86,10 +99,18 @@ public class MainActivity extends AppCompatActivity {
 //        Bundle bundle = getIntent().getExtras();
 //        ArrayList<Block> blockPool = (ArrayList<Block>) bundle.getSerializable("serialzable");
         BlockList temp = new BlockList(new ArrayList<Block>());
+        ArrayList<Block> placedBlocks = new ArrayList<>();
 
         ArrayList<Block> blockPool = temp.getBlocks();
 
-        b = blockPool.get(0);
+        blockPool.add(0, tempB);
+        b = blockPool.remove(0);
+        b.moveDown(700);
+
+
+        //Block tempB = b;
+        //blockPool.add(1, tempB);
+        placedBlocks.add(platform);
 
         System.out.println("starting x is " + x); //540.0
         System.out.println("starting y is " + y); // 1010.0
@@ -97,16 +118,17 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("screen height is " + screenHeight);
 
 
+
 //        p = new Path();
 //        p.moveTo(x, y);
 
         gyroscope = new Gyroscope(this);
 
-        imageView = (ImageView) findViewById(R.id.platform);
-        float secondplatformHeight = screenHeight - imageView.getHeight();
-        System.out.println("second platform y is " + secondplatformHeight);
+//        imageView = (ImageView) findViewById(R.id.platform);
+//        float secondplatformHeight = screenHeight - imageView.getHeight();
+//        System.out.println("second platform y is " + secondplatformHeight);
                 //Drawable d = getResources().getDrawable(R.id.square);
-//        Block b1 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        //Block b1 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
 //        Block b2 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
 //
 //        blockPool.add(b1);
@@ -120,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
         //imageView = b.getImageView();
         ConstraintLayout c = (ConstraintLayout) findViewById(R.id.main);
         c.addView(b.getImageView());
+        c.addView(platform.getImageView());
+        //c.removeView(b.getImageView());
         //c.addView(b1.getImageView());
         c.setConstraintSet(new ConstraintSet());
 
@@ -141,6 +165,12 @@ public class MainActivity extends AppCompatActivity {
             public void onRotation(float rx, float ry, float rz) {
                 tiltVals[0] = rx;
                 tiltVals[1] = ry;
+//                if ((tiltVals[0] > 0.5 && rx < -0.5) || (tiltVals[0] < -0.5 && rx > 0.5)) {
+//                    tiltVals[0] = rx;
+//                }
+//                if ((tiltVals[1] > 0.5 && ry < -0.5) || (tiltVals[1] < -0.5 && ry > 0.5)) {
+//                    tiltVals[1] = ry;
+//                }
 //                if (ry > 1.0) { // tilt right 0.5 is what we want
 //                    getWindow().getDecorView().setBackgroundColor(Color.GREEN);
 //                    System.out.println("tilted");
@@ -185,31 +215,47 @@ public class MainActivity extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (b.getX() > screenWidth || b.getX() < 0 || b.getY() < 0 || b.getY() > screenHeight) {
+                        boolean checkPlatform = true;
+                        if (b.getX() > screenWidth || b.getX() < 0 || b.getY() < 0) { // || b.getY() > platform.getY()+dy
                             b.reset();
                             System.out.println("back to beginning");
                         }
-//                        if(b.stackBlock(b1, dx, dy)) {
-//                            //cancel();
-//                        }
+                        int size = placedBlocks.size();
+                        System.out.println("size of placedBlocks is " + size);
+                        System.out.println("placedBlocks: " + placedBlocks);
+                        for (int i = 0; i < size; i++) {
+                            Block b1 = placedBlocks.get(i);
+                            if(b.stackBlock(b1, dx, dy)) {
+                                System.out.println("successfully stacked block");
+//                                cancel();
+                                placedBlocks.add(size-1, b);
+                                //blockPool.remove(0);
+                                if (blockPool.size() > 0) {
+                                    b = blockPool.remove(0);
+                                    c.addView(b.getImageView());
+                                } else {
+                                    cancel();
+                                }
+                                checkPlatform = false;
+                                //cancel();
+                                break;
+
+                            }
+                        }
                         System.out.println("x is " + b.getX());
                         System.out.println("y is " +b.getY());
-                        if (b.getY() < platformHeight + dy && b.getY() > platformHeight - dy) {
-                            System.out.println("roses");
-                            b.setY(platformHeight);
-                            if (blockPool.size() == 0) {
-                                cancel();
-                            } else {
-                                blockPool.remove(0);
-                            }
-                            if (blockPool.size() == 0) {
-                                cancel();
-                            } else {
-                                b = blockPool.get(0);
-                                c.addView(b.getImageView());
-                            }
-                            //cancel();
-                        }  else {
+//                        if (checkPlatform && b.getY() <= platformHeight + dy && b.getY() >= platformHeight - dy) {
+//                            System.out.println("roses");
+//                            b.setY(platformHeight);
+//                            placedBlocks.add(b);
+//                            if (blockPool.size() == 0) {
+//                                cancel();
+//                            } else {
+//                                b = blockPool.remove(0);
+//                                c.addView(b.getImageView());
+//                            }
+//                            //cancel();
+                        if (checkPlatform){ // else if
                             float rx = tiltVals[0];
                             float ry = tiltVals[1];
                             if (ry > 0.5) {
