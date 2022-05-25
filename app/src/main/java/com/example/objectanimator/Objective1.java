@@ -10,9 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+//import android.graphics.Bitmap;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,16 +41,24 @@ public class Objective1 extends AppCompatActivity {
     //Button button;
     ArrayList<Block> newBlockList;
     Block b;
+   // Bitmap bitmap;
 
     Gyroscope gyroscope;
 
     Handler handler = new Handler();
 
-    float screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+    float screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels; //screen width
     float screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     double tempScreenHeight = Resources.getSystem().getDisplayMetrics().heightPixels; // platform height is ~500px 520
+    double tempScreenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     //float platformHeight = screenHeight - 500;
     double platformHeight = tempScreenHeight - (3* 60 * Resources.getSystem().getDisplayMetrics().density); // 1669.0
+   // double platformWidth = (150 * Resources.getSystem().getDisplayMetrics().density);
+//    double platformWidthRight = (tempScreenWidth/2)+(platformWidth/2);
+//    double platformWidthLeft = (tempScreenWidth/2)-(platformWidth/2);
+    //double pixelRight = bitmap.getPixel(portal.getX(), portal.getY());
+
+
 
 //    DisplayMetrics metrics = getWindowManager().getDefaultDisplay().getMetrics(metrics);
 //    float logicalDensity = metrics.density;
@@ -59,6 +71,19 @@ public class Objective1 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objective1);
+//        ImageView portal = (ImageView) findViewById(R.id.yellowportal);
+        ImageView blackblockright = (ImageView) findViewById(R.id.blacksquareright);
+        ImageView blackblockleft = (ImageView) findViewById(R.id.blacksquareleft);
+        ImageView yellowportal = (ImageView) findViewById(R.id.yellowportal);
+        double yellowportalwidth = yellowportal.getWidth();
+//        double portalWidth = portal.getWidth(); //width of portal
+//        double portalWidthBothSide = (2*portalWidth);
+//        double screenWidthHalf = (0.5 * screenWidth); //half screen width
+//        double portalRightPoint = screenWidthHalf + portalWidthBothSide;
+
+
+
+        // System.out.println(portal.getHeight());
 
         System.out.println("starting x is " + x); //540.0
         System.out.println("starting y is " + y); // 1010.0
@@ -163,13 +188,19 @@ public class Objective1 extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (b.getX() > screenWidth || b.getX() < 0 || b.getY() < 0 || b.getY() > screenHeight) {
+                        if (b.getX() > screenWidth || b.getX() < 0 || b.getY() < 0 || b.getY() > screenHeight - blackblockleft.getHeight()) {
                             b.reset();
                             System.out.println("back to beginning");
                         }
                         System.out.println("x is " + b.getX());
                         System.out.println("y is " +b.getY());
-                        if (b.getY() < platformHeight + dy && b.getY() > platformHeight - dy) {
+                        if (b.getY() < platformHeight + dy && b.getY() > platformHeight - dy && b.getX() < blackblockright.getX() +dx && b.getX() > screenWidth-(yellowportalwidth+blackblockright.getX())) {
+                            //b.getX() > platformWidthRight && b.getX() < platformWidthLeft && b.getX() > platformWidthRight
+                            if(b.getX() < blackblockright.getX()){
+                                System.out.println("b.getX() < blackblockright.getX()");
+                            }else if(b.getX() > blackblockleft.getX()){
+                                System.out.println("b.getX() > blackblockleft.getX()");
+                            }
                             System.out.println("roses");
                             c.removeView(b.getImageView());
                             b.reset();

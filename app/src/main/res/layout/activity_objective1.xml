@@ -5,23 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/objective1"
-    tools:context=".Objective1">
+    tools:context=".Objective1"
+    android:background="@color/simplebackgroundcolor">
 
     <ImageView
-        android:id="@+id/platform"
-        android:layout_width="520dp"
+        android:id="@+id/yellowportal"
+        android:layout_width="150dp"
         android:layout_height="60dp"
+        android:layout_marginLeft="132dp"
+        android:layout_marginEnd="128dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:src="@drawable/yellowplatform"
+        android:src="@drawable/yellowportal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+
+    <ImageView
+        android:id="@+id/blacksquareleft"
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="132dp"
+        android:layout_marginEnd="284dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/blacksquareleft"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-<!--    <Button-->
+    <ImageView
+        android:id="@+id/blacksquareright"
+        android:layout_width="120dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="132dp"
+        android:layout_marginEnd="4dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/blacksquareright"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!--    <Button-->
 <!--        android:id="@+id/button"-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
