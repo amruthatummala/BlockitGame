@@ -6,18 +6,14 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.widget.ImageView;
 
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -67,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         if (resourceId > 0) {
             statusBarHeight = getResources().getDimensionPixelSize(resourceId);
         }
-        platformHeight = platformHeight - statusBarHeight;
+        //platformHeight = platformHeight - statusBarHeight;
         //float platformHeight = screenHeight - statusBarHeight;
         Block tempB= new Block(ContextCompat.getDrawable(this, R.drawable.rectangle),(int) screenWidth , (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         tempB.setX(0);
@@ -98,14 +94,15 @@ public class MainActivity extends AppCompatActivity {
 //        ArrayList<Block> backupBlocks = blockPool;
 //        Bundle bundle = getIntent().getExtras();
 //        ArrayList<Block> blockPool = (ArrayList<Block>) bundle.getSerializable("serialzable");
-        BlockList temp = new BlockList(new ArrayList<Block>());
+        GameInfo temp = new GameInfo();
         ArrayList<Block> placedBlocks = new ArrayList<>();
 
         ArrayList<Block> blockPool = temp.getBlocks();
 
         blockPool.add(0, tempB);
         b = blockPool.remove(0);
-        b.moveDown(700);
+        //b=tempB;
+        b.moveDown(900);
 
 
         //Block tempB = b;
@@ -127,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 //        imageView = (ImageView) findViewById(R.id.platform);
 //        float secondplatformHeight = screenHeight - imageView.getHeight();
 //        System.out.println("second platform y is " + secondplatformHeight);
-                //Drawable d = getResources().getDrawable(R.id.square);
+        //Drawable d = getResources().getDrawable(R.id.square);
         //Block b1 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
 //        Block b2 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
 //

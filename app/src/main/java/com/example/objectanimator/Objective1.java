@@ -6,15 +6,10 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -85,7 +80,8 @@ public class Objective1 extends AppCompatActivity {
         //Drawable d = getResources().getDrawable(R.id.square);
         Block b1 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         Block b2 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
-        Block b3 = new Block(ContextCompat.getDrawable(this, R.drawable.blueblock), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        //Block b3 = new Block(ContextCompat.getDrawable(this, R.drawable.blueblock), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        Block b3 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
 
 
         ArrayList<Block> oldBlockList = new ArrayList<>();
@@ -344,7 +340,8 @@ public class Objective1 extends AppCompatActivity {
 
     public void openMainActivity(){
         Intent openMainActivity = new Intent(this, MainActivity.class);
-        BlockList temp = new BlockList(newBlockList);
+        GameInfo temp = new GameInfo();
+        temp.setBlocks(newBlockList);
 //        Bundle b = new Bundle();
 //        b.putSerializable("serialzable", newBlockList);
 //        openMainActivity.putExtras(b);

@@ -16,12 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ObjectAnimator">
         <activity
-            android:name=".Objective1"
+            android:name=".ChooseLevel"
             android:exported="false" />
         <activity
+            android:name=".Objective1"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Instructions"
             android:exported="true"

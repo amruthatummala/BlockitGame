@@ -19,14 +19,14 @@ public class Instructions extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    openObjective1();
+                    openChooseLevel();
             }
         });
 
         // <style name="Theme.ObjectAnimator" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
     }
-    public void openObjective1(){
-        Intent intent = new Intent(this, Objective1.class);
+    public void openChooseLevel(){
+        Intent intent = new Intent(this, ChooseLevel.class);
         startActivity(intent);
     }
 }
