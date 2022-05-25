@@ -77,18 +77,27 @@ public class Block {// implements Parcelable {
 
     // ignore this method for now, part of my failed attempts to stack blocks...
     public boolean stackBlock(Block other, int dx, int dy) {
-        int[] coordsOther = new int[2];
-        other.getImageView().getLocationOnScreen(coordsOther);
-        int[] coordsThis = new int[2];
-        getImageView().getLocationOnScreen(coordsThis);
+//        int[] coordsOther = new int[2];
+//        other.getImageView().getLocationOnScreen(coordsOther);
+//        int[] coordsThis = new int[2];
+//        getImageView().getLocationOnScreen(coordsThis);
         System.out.println("this x is " + getX() + " and this y is " + getY());
         System.out.println("other x is " + other.getX() + " and other y is " + other.getY());
 
-        if (getY() <= other.getY() + dy && getY() >= other.getY() - dy) {
+        if (getY() <= other.getY() + dy && getY() >= other.getY() - dy && getX() + getWidth() >= other.getX() && getX() + getWidth() <= other.getX()+other.getWidth()){ //  && Math.abs(other.getX()-getX()) <= getWidth()
             System.out.println("chocolate");
             //setX(other.getX());
 
-            setY(other.getY() - getHeight());
+//            if (other.getImageView().getWidth() > 600) {
+//                setY(other.getY() - getHeight());
+//            }
+            //if (getX() + getWidth() >= other.getX() && getX() + getWidth() <= other.getX()+other.getWidth()) {
+                //setX(other.getX());
+                setY(other.getY()-getHeight());
+            //} //else {
+//                setY(other.getY());
+//            }
+//            setY(other.getY() - getHeight());
 
             return true;
         }

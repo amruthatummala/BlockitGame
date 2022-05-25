@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
                             if(b.stackBlock(b1, dx, dy)) {
                                 System.out.println("successfully stacked block");
 //                                cancel();
-                                placedBlocks.add(size-1, b);
+                                placedBlocks.add(0, b);
                                 //blockPool.remove(0);
                                 if (blockPool.size() > 0) {
                                     b = blockPool.remove(0);
