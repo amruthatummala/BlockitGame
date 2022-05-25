@@ -64,8 +64,8 @@ public class Objective1 extends AppCompatActivity {
         System.out.println("starting y is " + y); // 1010.0
         System.out.println("platform y is " + platformHeight);
         System.out.println("screen height is " + screenHeight);
-//        double temp = 60 * Resources.getSystem().getDisplayMetrics().density;
-//        System.out.println("platform height is " + temp);
+        double temp = 57 * Resources.getSystem().getDisplayMetrics().density;
+        System.out.println("platform height is " + temp);
 
 //        button = (Button) findViewById(R.id.button);
 //        button.setOnClickListener(new View.OnClickListener() {
@@ -85,10 +85,7 @@ public class Objective1 extends AppCompatActivity {
         //Drawable d = getResources().getDrawable(R.id.square);
         Block b1 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         Block b2 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
-        //Block b3 = new Block(ContextCompat.getDrawable(this, R.drawable.blueblock), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
-
-        Block b3= new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
-
+        Block b3 = new Block(ContextCompat.getDrawable(this, R.drawable.blueblock), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
 
 
         ArrayList<Block> oldBlockList = new ArrayList<>();
@@ -173,7 +170,7 @@ public class Objective1 extends AppCompatActivity {
                         System.out.println("x is " + b.getX());
                         System.out.println("y is " +b.getY());
                         if (b.getY() < platformHeight + dy && b.getY() > platformHeight - dy) {
-                            System.out.println("toasty");
+                            System.out.println("roses");
                             c.removeView(b.getImageView());
                             b.reset();
                             newBlockList.add(b);
