@@ -175,6 +175,7 @@ public class Objective1 extends AppCompatActivity {
                             b.reset();
                             newBlockList.add(b);
                             oldBlockList.remove(0);
+                            System.out.println("idk");
                             System.out.println("Added block to newBlockList");
                             System.out.println("Removed block from oldBlockList");
                             if (oldBlockList.size() == 0) {
