@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -21,6 +22,8 @@ public class Objective1 extends AppCompatActivity {
 
 
     ImageView imageView;
+    GameInfo temp = new GameInfo();
+    String difficulty = temp.getDifficulty();
     //Block b;
     ObjectAnimator objectAnimator;
     //Path p;
@@ -71,6 +74,7 @@ public class Objective1 extends AppCompatActivity {
 //        });
 
 
+
 //        p = new Path();
 //        p.moveTo(x, y);
 
@@ -80,9 +84,16 @@ public class Objective1 extends AppCompatActivity {
         //Drawable d = getResources().getDrawable(R.id.square);
         Block b1 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         Block b2 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
-        //Block b3 = new Block(ContextCompat.getDrawable(this, R.drawable.blueblock), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         Block b3 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        Block b4 = new Block(ContextCompat.getDrawable(this, R.drawable.blueblock), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
 
+
+        ArrayList<Block> correctBlocks = new ArrayList<>();
+        if (difficulty.equals("easy")) {
+            correctBlocks.add(b1);
+            correctBlocks.add(b2);
+            correctBlocks.add(b3);
+        }
 
         ArrayList<Block> oldBlockList = new ArrayList<>();
         newBlockList = new ArrayList<>();
@@ -90,6 +101,8 @@ public class Objective1 extends AppCompatActivity {
         oldBlockList.add(b1);
         oldBlockList.add(b2);
         oldBlockList.add(b3);
+        oldBlockList.add(b4);
+
         b = oldBlockList.get(0);
 
         //imageView = b.getImageView();
@@ -166,20 +179,34 @@ public class Objective1 extends AppCompatActivity {
                         System.out.println("x is " + b.getX());
                         System.out.println("y is " +b.getY());
                         if (b.getY() < platformHeight + dy && b.getY() > platformHeight - dy) {
-                            System.out.println("roses");
-                            c.removeView(b.getImageView());
-                            b.reset();
-                            newBlockList.add(b);
-                            oldBlockList.remove(0);
-                            System.out.println("idk");
-                            System.out.println("Added block to newBlockList");
-                            System.out.println("Removed block from oldBlockList");
-                            if (oldBlockList.size() == 0) {
+                            boolean found = false;
+                            for (Block cb : correctBlocks) {
+                                if (b.getImageView().getDrawable().equals(cb.getImageView().getDrawable())) {
+                                    found = true;
+                                }
+                            }
+                            if (!found) {
+                                System.out.println("game over");
                                 cancel();
-                                openMainActivity();
+                                gameOver();
+//                                Toast.makeText(Objective1.this, "Remember to only collect the blocks that you need to build the structure!"
+//                                , Toast.LENGTH_LONG).show();
                             } else {
-                                b = oldBlockList.get(0);
-                                c.addView(b.getImageView());
+                                System.out.println("roses");
+                                c.removeView(b.getImageView());
+                                b.reset();
+                                newBlockList.add(b);
+                                oldBlockList.remove(0);
+                                System.out.println("idk");
+                                System.out.println("Added block to newBlockList");
+                                System.out.println("Removed block from oldBlockList");
+                                if (oldBlockList.size() == 0) {
+                                    cancel();
+                                    openMainActivity();
+                                } else {
+                                    b = oldBlockList.get(0);
+                                    c.addView(b.getImageView());
+                                }
                             }
 
                             //cancel();
@@ -338,9 +365,14 @@ public class Objective1 extends AppCompatActivity {
         gyroscope.unregister();
     }
 
+    public void gameOver() {
+        Intent gameOver = new Intent(this, GameOver.class);
+        gameOver.putExtra("activity", "objective1");
+        startActivity(gameOver);
+    }
+
     public void openMainActivity(){
         Intent openMainActivity = new Intent(this, MainActivity.class);
-        GameInfo temp = new GameInfo();
         temp.setBlocks(newBlockList);
 //        Bundle b = new Bundle();
 //        b.putSerializable("serialzable", newBlockList);
