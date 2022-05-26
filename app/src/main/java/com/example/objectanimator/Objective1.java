@@ -65,6 +65,11 @@ public class Objective1 extends AppCompatActivity {
         double temp = 57 * Resources.getSystem().getDisplayMetrics().density;
         System.out.println("platform height is " + temp);
 
+        ImageView blackblockright = (ImageView) findViewById(R.id.blacksquareright);
+        ImageView blackblockleft = (ImageView) findViewById(R.id.blacksquareleft);
+        ImageView yellowportal = (ImageView) findViewById(R.id.yellowportal);
+        double yellowportalwidth = yellowportal.getWidth();
+
 //        button = (Button) findViewById(R.id.button);
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -172,13 +177,13 @@ public class Objective1 extends AppCompatActivity {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (b.getX() > screenWidth || b.getX() < 0 || b.getY() < 0 || b.getY() > screenHeight) {
+                        if (b.getX() > screenWidth || b.getX() < 0 || b.getY() < 0 || b.getY() > screenHeight - blackblockleft.getHeight()) {
                             b.reset();
                             System.out.println("back to beginning");
                         }
                         System.out.println("x is " + b.getX());
                         System.out.println("y is " +b.getY());
-                        if (b.getY() < platformHeight + dy && b.getY() > platformHeight - dy) {
+                        if (b.getY() < platformHeight + dy && b.getY() > platformHeight - dy && b.getX() < blackblockright.getX() +dx && b.getX() > screenWidth-(yellowportalwidth+blackblockright.getX())) {
                             boolean found = false;
                             for (Block cb : correctBlocks) {
                                 if (b.getImageView().getDrawable().equals(cb.getImageView().getDrawable())) {
@@ -189,7 +194,7 @@ public class Objective1 extends AppCompatActivity {
                                 System.out.println("game over");
                                 cancel();
                                 gameOver();
-//                                Toast.makeText(Objective1.this, "Remember to only collect the blocks that you need to build the structure!"
+//                                Toast.makeText(Objective1&& b.getX() < blackblockright.getX() +dx && b.getX() > screenWidth-(yellowportalwidth+blackblockright.getX()).this, "Remember to only collect the blocks that you need to build the structure!"
 //                                , Toast.LENGTH_LONG).show();
                             } else {
                                 System.out.println("roses");
