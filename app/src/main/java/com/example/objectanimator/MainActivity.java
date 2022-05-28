@@ -54,16 +54,13 @@ public class MainActivity extends AppCompatActivity {
     float screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     float screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     double tempScreenHeight = Resources.getSystem().getDisplayMetrics().heightPixels; // platform height is ~500px 520
-    //float platformHeight = screenHeight - 500;
 
     float platformHeight = (float) tempScreenHeight - (60 * Resources.getSystem().getDisplayMetrics().density); // 1669.0
 
-//    DisplayMetrics metrics = getWindowManager().getDefaultDisplay().getMetrics(metrics);
-//    float logicalDensity = metrics.density;
-//    int px = (int) (dp * logicalDensity + 0.5);
-
     float x = screenWidth / 2;
     float y = screenHeight / 2;
+
+    ConstraintLayout c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,16 +73,12 @@ public class MainActivity extends AppCompatActivity {
         b = blockPool.remove(0);
 
         platform= new Block(ContextCompat.getDrawable(this, R.drawable.rectangle),(int) screenWidth , (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
-        //platform.setY(platformHeight);
         platform.setY(platformHeight);
-
 
         platform.setX(0);
 
-        ConstraintLayout c = (ConstraintLayout) findViewById(R.id.main);
+        c = (ConstraintLayout) findViewById(R.id.main);
 
-        //c.removeView(b.getImageView());
-        //c.addView(b1.getImageView());
         c.setConstraintSet(new ConstraintSet());
 
         System.out.println("screenWidth is " + screenWidth); //1080.0
@@ -93,13 +86,9 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
             Boolean retry = getIntent().getExtras().getBoolean("retry");
             if (retry) {
-                for (Block b : placedBlocks) {
-                    c.removeView(b.getImageView());
-                }
+
             }
         }
-
-
 
         c.addView(platform.getImageView());
         c.addView(b.getImageView());
@@ -111,65 +100,15 @@ public class MainActivity extends AppCompatActivity {
         if (resourceId > 0) {
             statusBarHeight = getResources().getDimensionPixelSize(resourceId);
         }
-        //platformHeight = platformHeight - statusBarHeight;
-        //float platformHeight = screenHeight - statusBarHeight;
+
         Block tempB= new Block(ContextCompat.getDrawable(this, R.drawable.rectangle),(int) screenWidth , (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         tempB.setX(0);
 
-
-//        platform.setY(screenHeight/2);
-//        tempB.setY(screenHeight/2);
-
-        //GameInfo temp = new GameInfo();
-
-
-        //blockPool.add(0, tempB);
         System.out.println("block width and height is " + blockPool.get(1).getWidth()); // 180
 
-
-
-        //b=tempB;
-        //b.moveDown(840);
-
-
-//        if (difficulty.equals("easy")) {
-//
-////            tempB.setWidth(2*blockPool.get(0).getWidth());
-////            platform.setWidth(2*blockPool.get(0).getWidth());
-//        }
-
-        //tempB.stackBlock(platform, dx, dy);
-
-
-        //Block tempB = b;
-        //blockPool.add(1, tempB);
         placedBlocks.add(platform);
-        //placedBlocks.add(0, tempB);
-
-
-//        p = new Path();
-//        p.moveTo(x, y);
 
         gyroscope = new Gyroscope(this);
-
-//        imageView = (ImageView) findViewById(R.id.platform);
-//        float secondplatformHeight = screenHeight - imageView.getHeight();
-//        System.out.println("second platform y is " + secondplatformHeight);
-        //Drawable d = getResources().getDrawable(R.id.square);
-        //Block b1 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
-//        Block b2 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
-//
-//        blockPool.add(b1);
-//        blockPool.add(b2);
-
-        //b = blockPool.get(0);
-
-//        b1.setY(platformHeight);
-//        b1.setX(500);
-
-        //imageView = b.getImageView();
-
-
 
         gyroscope.setListener(new Gyroscope.Listener() {
             @Override
@@ -322,37 +261,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    public void alignBlocks() {
-//        if (placedBlocks.size() > 3) {
-//            float[] baseCoords = findFirstBlock(0);
-//            int x = (int) baseCoords[0];
-//            int y = (int) baseCoords[1];
-//            Block match = findMatchingBlock(x+placedBlocks.get(0).getWidth()+errorMargin, y);
-//            if (match != null) {
-//                System.out.println("this ran");
-//                match.setX(x+match.getWidth());
-//            }
-//        }
-//    }
 
     public Block findMatchingBlock(int x, int y) {
         for (int i = 0; i < placedBlocks.size()-1; i++) {
             Block temp = placedBlocks.get(i);
             //temp.getX() <= x && x <= temp.getX()+temp.getWidth()
-            if (Math.abs(temp.getX()-x) < temp.getWidth()  &&
-            Math.abs(y - temp.getY()) < temp.getHeight() ) {
+
+            //temp.getX() <= x && x <= temp.getX()+temp.getWidth() &&
+            //            temp.getY()-temp.getHeight()/2 <= y && y <= temp.getY()/2 + temp.getHeight()/2
+            if ( Math.abs(temp.getX()-x) < temp.getWidth()  &&
+                    Math.abs(y - temp.getY()) < temp.getHeight()) {
+                System.out.println("ambrosia");
                 return temp;
             }
         }
-        if (Math.abs(y - platformHeight) < platform.getHeight()) {
+        if (Math.abs(y - platform.getY()) < platform.getHeight()) {
+            System.out.println("peaches");
+            System.out.println("peaches y is " + y);
             return platform;
         }
+
+
         return null;
     }
 
     public Block findFirstBlock(int startX) {
         if (placedBlocks.size() > 1) {
-            for (int x = startX; x < screenWidth; x+=40) {
+            for (int x = startX+1; x < screenWidth; x+=40) {
                 Block temp = findMatchingBlock(x, (int) placedBlocks.get(placedBlocks.size()-2).getY());
                 if (temp != null) {
                     return temp;
@@ -364,70 +299,75 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkEasy() {
-//        Block firstBlock = placedBlocks.get(0);
-//        Block secondBlock = placedBlocks.get(1);
-//        Block thirdBlock = placedBlocks.get(2);
-
+        boolean correct = false;
         Block firstBlock = findFirstBlock(0);
-        System.out.println("firstBlock x: " + firstBlock.getX());
-        System.out.println("firstBlock y: " + firstBlock.getY());
+//        System.out.println("firstBlock x: " + firstBlock.getX());
+//        System.out.println("firstBlock y: " + firstBlock.getY());
         if (firstBlock != null) {
-            Block secondBlock = findMatchingBlock((int) firstBlock.getX()+firstBlock.getWidth()+dx, (int) firstBlock.getY());
-            Block thirdBlock = findMatchingBlock((int) firstBlock.getX(), (int) firstBlock.getY()+ firstBlock.getHeight()+dy);
-            if (secondBlock != null) {
-                if (thirdBlock != null) {
+            Block secondBlock = findMatchingBlock((int) firstBlock.getX() + firstBlock.getWidth() + dx, (int) firstBlock.getY());
+            Block thirdBlock = findMatchingBlock((int) firstBlock.getX(), (int) firstBlock.getY() - firstBlock.getHeight() - dy);
+            if (secondBlock != null && Math.abs(secondBlock.getX() - firstBlock.getX()) <= firstBlock.getWidth() + dx) {
+                if (thirdBlock != null && Math.abs(thirdBlock.getY() - firstBlock.getY()) <= firstBlock.getHeight() + dy &&
+                        Math.abs(thirdBlock.getX() - firstBlock.getX()) <= 7*dx) {
                     System.out.println("coral reef");
-                    goToVictory();
+                    correct = true;
                 }
-
-            } else {
-                System.out.println("dolphin");
-                goToGameOver();
             }
+        }
+        if (correct) {
+            goToVictory();
         } else {
-            System.out.println("dolphin");
             goToGameOver();
         }
 
-
-
-
-//        secondBlock.setX(300);
-//        firstBlock.setX(300+firstBlock.getWidth());
-//        thirdBlock.setX(300);
-//        thirdBlock.setY(secondBlock.getY()+secondBlock.getHeight());
-//        if (firstBlock.getX() - secondBlock.getWidth() >= secondBlock.getX()-40
-//        && Math.abs(thirdBlock.getX()-firstBlock.getX()) <= 40
-//        && firstBlock.getY()+firstBlock.getHeight() == thirdBlock.getY()) {
-//            System.out.println("right");
-//        }
-
-//        if (containsBlock(350, (int) platformHeight+firstBlock.getHeight())
-//                && containsBlock(350+(int) firstBlock.getWidth(), (int) platformHeight+firstBlock.getHeight())
-//                && containsBlock(350, (int) platformHeight+ 2*firstBlock.getHeight())) {
-//            System.out.println("right");
-//        }
-
-//        if (secondBlock.getX() - thirdBlock.getWidth() >= thirdBlock.getX()-40
-//                && Math.abs(firstBlock.getX()-secondBlock.getX()) <= 40
-//                && secondBlock.getY()+secondBlock.getHeight() == firstBlock.getY()) {
-//            System.out.println("right");
-//        }
-//        if (thirdBlock.getX() - firstBlock.getWidth() >= firstBlock.getX()-40
-//                && Math.abs(thirdBlock.getX()-secondBlock.getX()) <= 40
-//                && thirdBlock.getY()+thirdBlock.getHeight() == secondBlock.getY()) {
-//            System.out.println("right");
-//        }
-//        if (thirdBlock.getX() - secondBlock.getWidth() >= secondBlock.getX()-40
-//                && Math.abs(thirdBlock.getX()-firstBlock.getX()) <= 40
-//                && thirdBlock.getY()+thirdBlock.getHeight() == firstBlock.getY()) {
-//            System.out.println("right");
-//        }
     }
 
     public void checkMedium() {
-
+        System.out.println("platform is " + platform);
+        boolean correct = false;
+        Block firstBlock = findFirstBlock(0);
+        if (firstBlock != null) {
+            Block secondBlock = findMatchingBlock((int) firstBlock.getX()+firstBlock.getWidth()+dx, //+dx
+                    (int) firstBlock.getY());
+            Block fourthBlock = findMatchingBlock((int) firstBlock.getX(),
+                    (int) firstBlock.getY()-firstBlock.getHeight()-dy);
+            float x = firstBlock.getY()+firstBlock.getHeight()+dy;
+            System.out.println("the y for fourthBlock is " + x);
+            System.out.println("firstBlock is not null");
+            if (secondBlock != null && Math.abs(secondBlock.getX()-firstBlock.getX()) <= firstBlock.getWidth()+3*dx) {
+                Block thirdBlock = findMatchingBlock((int) secondBlock.getX()+secondBlock.getWidth()+dx,//+dx
+                        (int) secondBlock.getY());
+                System.out.println("cats");
+                if (thirdBlock != null && Math.abs(thirdBlock.getX()-secondBlock.getX()) <= secondBlock.getWidth()+3*dx) {
+                    Block fifthBlock = findMatchingBlock((int) thirdBlock.getX(), //+dx
+                            (int) thirdBlock.getY()-thirdBlock.getHeight()-dy);
+                    System.out.println("dogs");
+                    System.out.println("fifthBlock is " + fifthBlock);
+                    System.out.println("fourthBlock is " + fourthBlock);
+                    System.out.println((fifthBlock.getX()-thirdBlock.getX()) + " is fifth x - third x");
+                    System.out.println((fourthBlock.getX()-firstBlock.getX()) + " is fourth x - first x");
+                    System.out.println((fourthBlock.getY()-firstBlock.getY()) + " is fourth y - first y");
+                    System.out.println((fifthBlock.getY()-thirdBlock.getY()) + " is fifth y - third y");
+                    System.out.println("** placedBlocks is " + placedBlocks);
+                    if (fifthBlock != null && fourthBlock != null &&
+                    Math.abs(fifthBlock.getX()-thirdBlock.getX()) <= 7*dx &&
+                    Math.abs(fourthBlock.getX()-firstBlock.getX()) <= 7*dx &&
+                    Math.abs(fourthBlock.getY()-firstBlock.getY()) <= firstBlock.getHeight()+dy &&
+                    Math.abs(fifthBlock.getY()-thirdBlock.getY()) <= thirdBlock.getHeight()+dy) {
+                        System.out.println("sea turtles");
+                        correct = true;
+                    }
+                }
+            }
+        }
+        if (correct) {
+            goToVictory();
+        } else {
+            goToGameOver();
+        }
     }
+
+
 
     public void checkHard() {
 
@@ -464,8 +404,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToGameOver() {
+        for (Block b : placedBlocks) {
+            c.removeView(b.getImageView());
+        }
         Intent intent = new Intent(this, GameOver.class);
-        intent.putExtra("activity", "main");
+        if (difficulty.equals("easy")) {
+            intent.putExtra("activity", "mainEasy");
+        } else if (difficulty.equals("medium")) {
+            intent.putExtra("activity", "mainMedium");
+        } else if (difficulty.equals("hard")) {
+            intent.putExtra("activity", "mainHard");
+        }
         startActivity(intent);
     }
 }

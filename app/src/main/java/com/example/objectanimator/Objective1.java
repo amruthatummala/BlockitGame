@@ -23,7 +23,7 @@ public class Objective1 extends AppCompatActivity {
 
     ImageView imageView;
     GameInfo temp = new GameInfo();
-    String difficulty = temp.getDifficulty();
+    String difficulty;
     //Block b;
     ObjectAnimator objectAnimator;
     //Path p;
@@ -59,6 +59,9 @@ public class Objective1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objective1);
 
+        difficulty = temp.getDifficulty();
+        System.out.println("difficulty is " + difficulty);
+
         System.out.println("starting x is " + x); //540.0
         System.out.println("starting y is " + y); // 1010.0
         System.out.println("platform y is " + platformHeight);
@@ -91,6 +94,8 @@ public class Objective1 extends AppCompatActivity {
         oldBlockList.add(b1);
         oldBlockList.add(b2);
         oldBlockList.add(b3);
+//        oldBlockList.add(b5);
+//        oldBlockList.add(b6);
         //oldBlockList.add(b4);
 
 
@@ -99,18 +104,13 @@ public class Objective1 extends AppCompatActivity {
             correctBlocks.add(b1);
             correctBlocks.add(b2);
             correctBlocks.add(b3);
-        }
-
-        if (difficulty.equals("medium")) {
+        } else if (difficulty.equals("medium")) {
             correctBlocks.add(b1);
             correctBlocks.add(b2);
             correctBlocks.add(b3);
             correctBlocks.add(b5);
             correctBlocks.add(b6);
-            correctBlocks.add(b7);
-        }
-
-        if (difficulty.equals("hard")) {
+        } else if (difficulty.equals("hard")) {
             correctBlocks.add(b1);
             correctBlocks.add(b2);
             correctBlocks.add(b3);
@@ -177,8 +177,8 @@ public class Objective1 extends AppCompatActivity {
 //                                , Toast.LENGTH_LONG).show();
                             } else {
                                 System.out.println("roses");
-                                c.removeView(b.getImageView());
                                 b.reset();
+                                c.removeView(b.getImageView());
                                 newBlockList.add(b);
                                 oldBlockList.remove(0);
                                 System.out.println("idk");
