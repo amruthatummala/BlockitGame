@@ -21,6 +21,7 @@ public class Victory extends AppCompatActivity {
             public void onClick(View v) {
                 GameInfo g = new GameInfo();
                 g.clearBlocks();
+                g.restartGame();
                 backtoMainMenu();
             }
         });
