@@ -13,7 +13,16 @@ public class GameInfo {
     }
 
     public ArrayList<Block> getBlocks() {
-        return blockPool;
+        ArrayList<Block> blocks = new ArrayList<>();
+        for (Block b : blockPool) {
+            blocks.add(b);
+        }
+        return blocks;
+    }
+
+    public void clearBlocks() {
+        ArrayList<Block> temp = new ArrayList<>();
+        blockPool = temp;
     }
 
     public void setDifficulty(String s) {
