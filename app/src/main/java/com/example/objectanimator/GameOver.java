@@ -18,6 +18,7 @@ public class GameOver extends AppCompatActivity {
         TextView obj1 = (TextView) findViewById(R.id.objective1);
         TextView main = (TextView) findViewById(R.id.mainactivity);
         Button retry = (Button) findViewById(R.id.tryAgain);
+        Button backtoMain = (Button) findViewById(R.id.backtoMain);
 
         String s = getIntent().getExtras().getString("activity");
         if (s.equals("objective1")) {
@@ -34,19 +35,35 @@ public class GameOver extends AppCompatActivity {
                 if (s.equals("objective1")) {
                     openObjective1();
                 } else {
-                    openMainActivity();
+                    //openMainActivity();
                 }
+                //backtoMainMenu();
+            }
+        });
+
+        backtoMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backtoMainMenu();
             }
         });
     }
 
     public void openMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("retry", true);
         startActivity(intent);
     }
 
     public void openObjective1() {
         Intent intent = new Intent(this, Objective1.class);
+        startActivity(intent);
+    }
+
+    public void backtoMainMenu() {
+        GameInfo g = new GameInfo();
+        g.clearBlocks();
+        Intent intent = new Intent(this, ChooseLevel.class);
         startActivity(intent);
     }
 }

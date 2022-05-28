@@ -29,8 +29,8 @@ public class Objective1 extends AppCompatActivity {
     //Block b;
     ObjectAnimator objectAnimator;
     //Path p;
-    int dx = 15;
-    int dy = 15;
+    int dx = 10;
+    int dy = 10;
     Timer timer = new Timer();
     //boolean tiltedRight = false;
     float[] tiltVals = new float[2];
@@ -39,6 +39,10 @@ public class Objective1 extends AppCompatActivity {
     ArrayList<Block> newUnwantedBlockList;
     Block b;
     Button button;
+
+    float angleChangeV =  1;
+    double angleChangeH = 0.6;
+
 
     Gyroscope gyroscope;
 
@@ -89,6 +93,12 @@ public class Objective1 extends AppCompatActivity {
         Block b1 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         Block b2 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         Block b3 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        //Block b4 = new Block(ContextCompat.getDrawable(this, R.drawable.blueblock), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        Block b5 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        Block b6 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        Block b7 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        Block b8 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        Block b9 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         Block b4 = new Block(ContextCompat.getDrawable(this, R.drawable.blueblock), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
 
 
@@ -111,7 +121,36 @@ public class Objective1 extends AppCompatActivity {
         oldBlockList.add(b1);
         oldBlockList.add(b2);
         oldBlockList.add(b3);
-        oldBlockList.add(b4);
+        //oldBlockList.add(b4);
+
+
+        ArrayList<Block> correctBlocks = new ArrayList<>();
+        if (difficulty.equals("easy")) {
+            correctBlocks.add(b1);
+            correctBlocks.add(b2);
+            correctBlocks.add(b3);
+        }
+
+        if (difficulty.equals("medium")) {
+            correctBlocks.add(b1);
+            correctBlocks.add(b2);
+            correctBlocks.add(b3);
+            correctBlocks.add(b5);
+            correctBlocks.add(b6);
+            correctBlocks.add(b7);
+        }
+
+        if (difficulty.equals("hard")) {
+            correctBlocks.add(b1);
+            correctBlocks.add(b2);
+            correctBlocks.add(b3);
+            correctBlocks.add(b5);
+            correctBlocks.add(b6);
+            correctBlocks.add(b7);
+            correctBlocks.add(b8);
+            correctBlocks.add(b9);
+        }
+
 
         b = oldBlockList.get(0);
 
@@ -119,22 +158,27 @@ public class Objective1 extends AppCompatActivity {
         c.addView(b.getImageView());
         c.setConstraintSet(new ConstraintSet());
 
+//        b.setX(x);
+//        b.setY(y);
 
-//        gyroscope.setListener(new Gyroscope.Listener() {
-//            @Override
-//            public void onRotation(float rx, float ry, float rz) {
-//                tiltVals[0] = rx;
-//                tiltVals[1] = ry;
-//            }
-//        });
+        //Path p = new Path();
+        //p.addCircle(500, 500, 200, Path.Direction.CCW);
+        //p.rMoveTo(10, 10);
+
+
+        //p.addCircle(500, 500, 200, Path.Direction.CCW);
+
+        //objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
+
+
         gyroscope.setListener(new Gyroscope.Listener() {
             @Override
             public void onRotation(float rx, float ry, float rz) {
-                if (Math.abs(rx) >= 0.5) {
+                if (Math.abs(rx) >= angleChangeH) {
                     tiltVals[0] = rx;
                 }
 
-                if (Math.abs(ry) >= 0.5) {
+                if (Math.abs(ry) >= angleChangeV) {
                     tiltVals[1] = ry;
                 }
 
@@ -155,7 +199,12 @@ public class Objective1 extends AppCompatActivity {
                         }
                         System.out.println("x is " + b.getX());
                         System.out.println("y is " +b.getY());
-                        if (b.getY() < platformHeight + dy && b.getY() > platformHeight - dy && b.getX() < blackblockright.getX() +dx && b.getX() > screenWidth-(yellowportalwidth+blackblockright.getX())) {
+//                        b.getY() < platformHeight + dy && b.getY() > platformHeight - dy &&
+//                                b.getX() < blackblockright.getX() +dx && b.getX() >
+//                                screenWidth-(yellowportalwidth+blackblockright.getX())
+                        if (Math.abs(b.getY()-yellowportal.getY()) <= yellowportal.getHeight()/2+dy &&
+                                b.getX() < blackblockright.getX() +dx && b.getX() >
+                                yellowportal.getX()-dx) {
                             boolean found = false;
                             for (Block cb : correctBlocks) {
                                 if (b.getImageView().getDrawable().equals(cb.getImageView().getDrawable())) {
@@ -224,16 +273,18 @@ public class Objective1 extends AppCompatActivity {
                         else {
                             float rx = tiltVals[0];
                             float ry = tiltVals[1];
-                            if (ry > 0.5) {
+                            System.out.println("rx is " + rx);
+                            System.out.println("ry is " + ry);
+                            if (ry > angleChangeV) {
                                 b.moveRight(dx);
                             }
-                            if (ry < -0.5) {
+                            if (ry < -1*angleChangeV) {
                                 b.moveLeft(dx);
                             }
-                            if (rx > 0.5) {
+                            if (rx > angleChangeH) {
                                 b.moveDown(dy);
                             }
-                            if (rx < -0.5) {
+                            if (rx < -1*angleChangeH) {
                                 b.moveUp(dy);
                             }
                         }
@@ -269,6 +320,7 @@ public class Objective1 extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
 
     @Override
     protected void onResume() {

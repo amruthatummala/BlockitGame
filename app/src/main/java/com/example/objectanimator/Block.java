@@ -12,6 +12,7 @@ import android.widget.ImageView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.core.content.ContextCompat;
 
 import java.io.Serializable;
 
@@ -23,6 +24,8 @@ public class Block {// implements Parcelable {
     private float defaultY;
     private float x;
     private float y;
+
+    private final int animationTime = 2400;
 
     public Block(Drawable d, int w, int h, Context c, float screenHeight, float screenWidth) {
         image = new ImageView(c);
@@ -84,58 +87,44 @@ public class Block {// implements Parcelable {
         System.out.println("this x is " + getX() + " and this y is " + getY());
         System.out.println("other x is " + other.getX() + " and other y is " + other.getY());
 
-        if (getY() <= other.getY() + dy && getY() >= other.getY() - dy && getX() + getWidth() >= other.getX() && getX() + getWidth() <= other.getX()+other.getWidth()){ //  && Math.abs(other.getX()-getX()) <= getWidth()
+//        getY() <= other.getY() + dy && getY() >= other.getY() - dy &&
+//                getX() + getWidth() >= other.getX() && getX() + getWidth() <= other.getX()+other.getWidth()
+
+        //  && Math.abs(other.getX()-getX()) <= dx
+
+
+        if (Math.abs(other.getY()-getY()) <= 15){ //  && Math.abs(other.getX()-getX()) <= getWidth()
             System.out.println("chocolate");
-            //setX(other.getX());
-
-//            if (other.getImageView().getWidth() > 600) {
-//                setY(other.getY() - getHeight());
-//            }
-            //if (getX() + getWidth() >= other.getX() && getX() + getWidth() <= other.getX()+other.getWidth()) {
-                //setX(other.getX());
+            if (getX() + getWidth() >= other.getX() && getX() + getWidth() <= other.getX()+other.getWidth()) {
                 setY(other.getY()-getHeight());
-            //} //else {
-//                setY(other.getY());
-//            }
-//            setY(other.getY() - getHeight());
+                return true;
+            }
 
-            return true;
+
+//            if (other.getWidth() > getWidth()) {
+//                setY(other.getY()-getHeight());
+//                return true;
+//            }
+//            else if (Math.abs(getX()- other.getX()) <= getWidth()/2) {
+//                setY(other.getY()-getHeight());
+//                setX(other.getX());
+//                return true;
+//            } else if (getX() < other.getX()) {
+//                setY(other.getY());
+//                setX(other.getX()-getWidth());
+//                return true;
+//            } else if (getX()>other.getX()){
+//                setY(other.getY());
+//                setX(other.getX()+other.getWidth());
+//                return true;
+//            }
+//
+//            return false;
         }
 //
-//        float ygap = coordsOther[1] - coordsThis[1]; //+ this.getHeight();
-//        System.out.println("height of this image view is " + this.getHeight());
-//        System.out.println("height of other image view is " + other.getHeight());
-//        float xgap = coordsOther[0] - coordsThis[0]; //+ this.getWidth();
-//        System.out.println("xgap is " + xgap);
-//        System.out.println("ygap is " + ygap);
-//        System.out.println("dx is " + dx);
-//        System.out.println("dy is " + dy);
-//        if (Math.abs(ygap) <= dy) {
-//            if (xgap > 0 && xgap <= dx) {
-//                this.setX(other.getX() - this.getWidth());
-//                this.setY(other.getY());
-//            } else if (xgap < 0 && xgap >= -15) {
-//                this.setX(other.getX() + this.getWidth());
-//                this.setY(other.getY());
-//            } else {
-//                this.setY(other.getY() + this.getHeight());
-//            }
-//            return true;
-//        }
+//
         return false;
 
-
-//        if (Math.abs(xgap) <= dx && Math.abs(ygap) <= dy) {
-//            System.out.println("stack block");
-//            if (xgap <= this.getWidth()/3) {
-//                this.setX(other.getX() - this.getWidth());
-//            } else if (xgap <= (2/3) * this.getWidth()) {
-//                this.setY(other.getY() + this.getHeight());
-//            } else {
-//                this.setX(other.getX() + other.getWidth());
-//            }
-//            return true;
-//        }
     }
 
     public int getWidth() {
@@ -144,6 +133,14 @@ public class Block {// implements Parcelable {
 
     public int getHeight() {
         return image.getHeight();
+    }
+
+    public void setWidth(int w) {
+        image.getLayoutParams().width = w;
+    }
+
+    public void setHeight(int h) {
+        image.getLayoutParams().height = h;
     }
 
     public void moveRight(int dx) {
@@ -155,7 +152,8 @@ public class Block {// implements Parcelable {
         //p.moveTo(x, y);
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "x", "y", p);
-        objectAnimator.setDuration(2000);
+        objectAnimator.setDuration(animationTime);
+
         objectAnimator.start();
 
     }
@@ -169,7 +167,8 @@ public class Block {// implements Parcelable {
         //p.moveTo(x, y);
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "x", "y", p);
-        objectAnimator.setDuration(2000);
+        objectAnimator.setDuration(animationTime);
+
         objectAnimator.start();
 
     }
@@ -184,7 +183,8 @@ public class Block {// implements Parcelable {
 
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "x", "y", p);
-        objectAnimator.setDuration(2000);
+        objectAnimator.setDuration(animationTime);
+
         objectAnimator.start();
 
     }
@@ -199,7 +199,10 @@ public class Block {// implements Parcelable {
 
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "x", "y", p);
-        objectAnimator.setDuration(2000);
+        objectAnimator.setDuration(animationTime);
+//        if (getWidth() > 500) {
+//            objectAnimator.setDuration(10);
+//        }
         objectAnimator.start();
 
     }

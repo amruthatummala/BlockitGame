@@ -16,10 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ObjectAnimator">
         <activity
+            android:name=".Victory"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
             android:name=".GameOver"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".ChooseLevel"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".Objective1"
