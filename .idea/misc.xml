@@ -7,9 +7,8 @@
         <entry key="app/src/main/res/layout/activity_game_over.xml" value="0.18432971014492755" />
         <entry key="app/src/main/res/layout/activity_instructions.xml" value="0.18432971014492755" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.23278985507246377" />
-        <entry key="app/src/main/res/layout/activity_objective1.xml" value="0.18432971014492755" />
-        <entry key="app/src/main/res/layout/activity_victory.xml" value="0.18840579710144928" />
         <entry key="app/src/main/res/layout/activity_objective1.xml" value="0.4" />
+        <entry key="app/src/main/res/layout/activity_victory.xml" value="0.31929347826086957" />
       </map>
     </option>
   </component>

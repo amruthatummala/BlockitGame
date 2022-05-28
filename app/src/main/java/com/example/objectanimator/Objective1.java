@@ -105,12 +105,6 @@ public class Objective1 extends AppCompatActivity {
         Block b4 = new Block(ContextCompat.getDrawable(this, R.drawable.blueblock), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
 
 
-        ArrayList<Block> correctBlocks = new ArrayList<>();
-        if (difficulty.equals("easy")) {
-            correctBlocks.add(b1);
-            correctBlocks.add(b2);
-            correctBlocks.add(b4);
-        }
 
         ArrayList<Block> wrongBlocks = new ArrayList<>();
         if(difficulty.equals("easy")){
@@ -228,6 +222,7 @@ public class Objective1 extends AppCompatActivity {
                                 System.out.println("Removed block from oldBlockList");
                                 if (oldBlockList.size() == 0) {
                                     cancel();
+                                    System.out.println("MOVING ON");
                                     openMainActivity();
                                 } else {
                                     b = oldBlockList.get(0);
@@ -298,17 +293,16 @@ public class Objective1 extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean foundIt = false;
                 int correctCount = 0;
                 for(Block cbl : correctBlocks){
                     for(Block nbl : newBlockList){
                         if(cbl.getImageView().getDrawable().equals(nbl.getImageView().getDrawable())){
-                            foundIt = true;
                             correctCount++;
                         }
                     }
                 }
                 if(correctCount == correctBlocks.size()){
+                    System.out.println("Roger that");
                     openObjective2();
                 }
             }

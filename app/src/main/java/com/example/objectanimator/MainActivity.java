@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         Block tempB= new Block(ContextCompat.getDrawable(this, R.drawable.rectangle),(int) screenWidth , (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         tempB.setX(0);
 
-        System.out.println("block width and height is " + blockPool.get(1).getWidth()); // 180
+     //   System.out.println("block width and height is " + blockPool.get(1).getWidth()); // 180
 
         placedBlocks.add(platform);
 
