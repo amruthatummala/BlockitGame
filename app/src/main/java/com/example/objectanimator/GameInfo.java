@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class GameInfo {
     private static ArrayList<Block> blockPool = new ArrayList<Block>();
-    private static ArrayList<Block> backUpBlocks = new ArrayList<>();
+    //private static ArrayList<Block> backUpBlocks = new ArrayList<>();
     private static String difficulty = "";
 
     public void setBlocks(ArrayList<Block> b) {
         for (int i = 0; i < b.size(); i++) {
             blockPool.add(b.get(i));
-            backUpBlocks.add(b.get(i));
+            //backUpBlocks.add(b.get(i));
         }
     }
 
@@ -36,7 +36,7 @@ public class GameInfo {
         int i = 0;
         while (i < blockPool.size()) {
             blockPool.remove(i);
-            backUpBlocks.remove(i);
+            //backUpBlocks.remove(i);
         }
     }
 

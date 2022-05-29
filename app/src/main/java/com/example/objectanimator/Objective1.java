@@ -107,9 +107,6 @@ public class Objective1 extends AppCompatActivity {
 
 
         ArrayList<Block> wrongBlocks = new ArrayList<>();
-        if(difficulty.equals("easy")){
-            wrongBlocks.add(b3);
-        }
 
         ArrayList<Block> oldBlockList = new ArrayList<>();
         newBlockList = new ArrayList<>();
@@ -118,8 +115,11 @@ public class Objective1 extends AppCompatActivity {
         oldBlockList.add(b1);
         oldBlockList.add(b2);
         oldBlockList.add(b3);
-//        oldBlockList.add(b5);
-//        oldBlockList.add(b6);
+        oldBlockList.add(b5);
+        oldBlockList.add(b6);
+        oldBlockList.add(b7);
+        oldBlockList.add(b8);
+        oldBlockList.add(b9);
         //oldBlockList.add(b4);
 
 
@@ -128,12 +128,22 @@ public class Objective1 extends AppCompatActivity {
             correctBlocks.add(b1);
             correctBlocks.add(b2);
             correctBlocks.add(b3);
+
+            wrongBlocks.add(b5);
+            wrongBlocks.add(b6);
+            wrongBlocks.add(b7);
+            wrongBlocks.add(b8);
+            wrongBlocks.add(b9);
         } else if (difficulty.equals("medium")) {
             correctBlocks.add(b1);
             correctBlocks.add(b2);
             correctBlocks.add(b3);
             correctBlocks.add(b5);
             correctBlocks.add(b6);
+
+            wrongBlocks.add(b7);
+            wrongBlocks.add(b8);
+            wrongBlocks.add(b9);
         } else if (difficulty.equals("hard")) {
             correctBlocks.add(b1);
             correctBlocks.add(b2);
@@ -199,19 +209,19 @@ public class Objective1 extends AppCompatActivity {
                         if (Math.abs(b.getY()-yellowportal.getY()) <= yellowportal.getHeight()/2+dy &&
                                 b.getX() < blackblockright.getX() +dx && b.getX() >
                                 yellowportal.getX()-dx) {
-                            boolean found = false;
-                            for (Block cb : correctBlocks) {
-                                if (b.getImageView().getDrawable().equals(cb.getImageView().getDrawable())) {
-                                    found = true;
-                                }
-                            }
-                            if (!found) {
-                                System.out.println("game over");
-                                cancel();
-                                gameOver();
-//                                Toast.makeText(Objective1&& b.getX() < blackblockright.getX() +dx && b.getX() > screenWidth-(yellowportalwidth+blackblockright.getX()).this, "Remember to only collect the blocks that you need to build the structure!"
-//                                , Toast.LENGTH_LONG).show();
-                            } else {
+//                            boolean found = false;
+//                            for (Block cb : correctBlocks) {
+//                                if (b.getImageView().getDrawable().equals(cb.getImageView().getDrawable())) {
+//                                    found = true;
+//                                }
+//                            }
+//                            if (!found) {
+//                                System.out.println("game over");
+//                                cancel();
+//                                gameOver();
+////                                Toast.makeText(Objective1&& b.getX() < blackblockright.getX() +dx && b.getX() > screenWidth-(yellowportalwidth+blackblockright.getX()).this, "Remember to only collect the blocks that you need to build the structure!"
+////                                , Toast.LENGTH_LONG).show();
+//                            } else {
                                 System.out.println("roses");
                                 b.reset();
                                 c.removeView(b.getImageView());
@@ -223,29 +233,30 @@ public class Objective1 extends AppCompatActivity {
                                 if (oldBlockList.size() == 0) {
                                     cancel();
                                     System.out.println("MOVING ON");
-                                    openMainActivity();
+                                    //openMainActivity();
                                 } else {
                                     b = oldBlockList.get(0);
                                     c.addView(b.getImageView());
                                 }
-                            }
+                            //}
 
                             //cancel();
-                        }else if(b.getY() > 0 && b.getY() < blueportal.getHeight() && b.getX() > blackblocklefttop.getWidth() && b.getX() < screenWidth - (blackblockrighttop.getWidth()+blueportalwidth)) {
-                            System.out.println("I touched the top");
-                            boolean found = false;
-                            for (Block cb : wrongBlocks) {
-                                if (b.getImageView().getDrawable().equals(cb.getImageView().getDrawable())) {
-                                    found = true;
-                                }
-                            }
-                            if (!found) {
-                                System.out.println("game over");
-                                cancel();
-                                gameOver();
-//                                Toast.makeText(Objective1&& b.getX() < blackblockright.getX() +dx && b.getX() > screenWidth-(yellowportalwidth+blackblockright.getX()).this, "Remember to only collect the blocks that you need to build the structure!"
-//                                , Toast.LENGTH_LONG).show();
-                            } else {
+                            // else if in line below
+                        } if(b.getY() > 0 && b.getY() < blueportal.getHeight() && b.getX() > blackblocklefttop.getWidth() && b.getX() < screenWidth - (blackblockrighttop.getWidth()+blueportalwidth)) {
+//                            System.out.println("I touched the top");
+//                            boolean found = false;
+//                            for (Block cb : wrongBlocks) {
+//                                if (b.getImageView().getDrawable().equals(cb.getImageView().getDrawable())) {
+//                                    found = true;
+//                                }
+//                            }
+//                            if (!found) {
+//                                System.out.println("game over");
+//                                cancel();
+//                                gameOver();
+////                                Toast.makeText(Objective1&& b.getX() < blackblockright.getX() +dx && b.getX() > screenWidth-(yellowportalwidth+blackblockright.getX()).this, "Remember to only collect the blocks that you need to build the structure!"
+////                                , Toast.LENGTH_LONG).show();
+//                            } else {
                                 System.out.println("roses");
                                 c.removeView(b.getImageView());
                                 b.reset();
@@ -256,12 +267,12 @@ public class Objective1 extends AppCompatActivity {
                                 System.out.println("Removed block from oldBlockList");
                                 if (oldBlockList.size() == 0) {
                                     cancel();
-                                    openMainActivity();
+                                    //openMainActivity();
                                 } else {
                                     b = oldBlockList.get(0);
                                     c.addView(b.getImageView());
                                 }
-                            }
+                            //}
 
 
                         }
@@ -293,18 +304,23 @@ public class Objective1 extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int correctCount = 0;
-                for(Block cbl : correctBlocks){
-                    for(Block nbl : newBlockList){
-                        if(cbl.getImageView().getDrawable().equals(nbl.getImageView().getDrawable())){
-                            correctCount++;
-                        }
-                    }
+                if (correctBlocks.size() == newBlockList.size()) {
+                    openMainActivity();
+                } else {
+                    gameOver();
                 }
-                if(correctCount == correctBlocks.size()){
-                    System.out.println("Roger that");
-                    openObjective2();
-                }
+//                int correctCount = 0;
+//                for(Block cbl : correctBlocks){
+//                    for(Block nbl : newBlockList){
+//                        if(cbl.getImageView().getDrawable().equals(nbl.getImageView().getDrawable())){
+//                            correctCount++;
+//                        }
+//                    }
+//                }
+//                if(correctCount == correctBlocks.size()){
+//                    System.out.println("Roger that");
+//                    openObjective2();
+//                }
             }
         });
 

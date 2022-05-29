@@ -1,3 +1,5 @@
+
+
 package com.example.objectanimator;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         Block tempB= new Block(ContextCompat.getDrawable(this, R.drawable.rectangle),(int) screenWidth , (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         tempB.setX(0);
 
-     //   System.out.println("block width and height is " + blockPool.get(1).getWidth()); // 180
+        //   System.out.println("block width and height is " + blockPool.get(1).getWidth()); // 180
 
         placedBlocks.add(platform);
 
@@ -353,10 +355,10 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println((fifthBlock.getY()-thirdBlock.getY()) + " is fifth y - third y");
                     System.out.println("** placedBlocks is " + placedBlocks);
                     if (fifthBlock != null && fourthBlock != null &&
-                    Math.abs(fifthBlock.getX()-thirdBlock.getX()) <= 7*dx &&
-                    Math.abs(fourthBlock.getX()-firstBlock.getX()) <= 7*dx &&
-                    Math.abs(fourthBlock.getY()-firstBlock.getY()) <= firstBlock.getHeight()+dy &&
-                    Math.abs(fifthBlock.getY()-thirdBlock.getY()) <= thirdBlock.getHeight()+dy) {
+                            Math.abs(fifthBlock.getX()-thirdBlock.getX()) <= 7*dx &&
+                            Math.abs(fourthBlock.getX()-firstBlock.getX()) <= 7*dx &&
+                            Math.abs(fourthBlock.getY()-firstBlock.getY()) <= firstBlock.getHeight()+dy &&
+                            Math.abs(fifthBlock.getY()-thirdBlock.getY()) <= thirdBlock.getHeight()+dy) {
                         System.out.println("sea turtles");
                         correct = true;
                     }

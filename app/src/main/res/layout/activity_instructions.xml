@@ -17,15 +17,15 @@
         android:textSize="@android:dimen/app_icon_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.573"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.081" />
+        app:layout_constraintVertical_bias="0.024" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="335dp"
-        android:layout_height="504dp"
+        android:layout_width="338dp"
+        android:layout_height="544dp"
         android:fontFamily="casual"
         android:text="There are 2 parts to this game: Collecting the blocks and Building the structure. \n
 Part 1: \n
@@ -33,16 +33,18 @@ Part 1: \n
 
 Part 2: \n
 1. You will be given a desired shape to build. \n
-2. Tilt your phone so that the blocks you collected in part 1 land on top of each other to produce the desired shape on the platform
-"
+2. Tilt your phone so that the blocks you collected in part 1 land on top of each other to produce the desired shape on the platform. \n
+
+Note: The colors of the blocks do not matter."
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.612" />
+        app:layout_constraintVertical_bias="0.673" />
 
     <Button
         android:id="@+id/button"
@@ -55,6 +57,6 @@ Part 2: \n
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.882" />
+        app:layout_constraintVertical_bias="0.945" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

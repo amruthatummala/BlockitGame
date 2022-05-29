@@ -24,9 +24,9 @@
     <TextView
         android:id="@+id/objective1"
         android:layout_width="268dp"
-        android:layout_height="167dp"
+        android:layout_height="180dp"
         android:fontFamily="casual"
-        android:text="Remember to collect only the blocks you need!"
+        android:text="Remember to collect the exact amount of blocks you need!"
         android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
