@@ -24,12 +24,12 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="338dp"
-        android:layout_height="544dp"
+        android:layout_width="336dp"
+        android:layout_height="562dp"
         android:fontFamily="casual"
-        android:text="There are 2 parts to this game: Collecting the blocks and Building the structure. \n
+        android:text="There are 2 parts to this game: Collecting the blocks and building the structure. \n
 Part 1: \n
-1. Tilt your phone and collect the blocks by making them fall into the portal \n
+1. Tilt your phone and collect the blocks by making them fall into the portals. The yellow portal collects blocks and the blue portal disposes of them. \n
 
 Part 2: \n
 1. You will be given a desired shape to build. \n
@@ -38,13 +38,13 @@ Part 2: \n
 Note: The colors of the blocks do not matter."
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="18.5sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.673" />
+        app:layout_constraintVertical_bias="0.727" />
 
     <Button
         android:id="@+id/button"
@@ -57,6 +57,6 @@ Note: The colors of the blocks do not matter."
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.945" />
+        app:layout_constraintVertical_bias="0.932" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

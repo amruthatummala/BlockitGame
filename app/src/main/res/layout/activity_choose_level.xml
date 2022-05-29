@@ -25,12 +25,12 @@
 
     <Button
         android:id="@+id/btnEasy"
-        android:text="easy"
-        android:backgroundTint="@color/purple_200"
-        android:layout_width="288dp"
-        android:layout_height="81dp"
-        android:layout_marginStart="60dp"
+        android:layout_width="169dp"
+        android:layout_height="89dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="156dp"
+        android:backgroundTint="@color/purple_200"
+        android:text="easy"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,11 +38,10 @@
 
     <Button
         android:id="@+id/btnMedium"
-        android:layout_width="288dp"
-        android:layout_height="81dp"
-        android:layout_marginStart="60dp"
+        android:layout_width="169dp"
+        android:layout_height="89dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="300dp"
-
         android:backgroundTint="@color/purple_200"
         android:text="medium"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -52,15 +51,50 @@
 
     <Button
         android:id="@+id/btnHard"
-        android:layout_width="288dp"
-        android:layout_height="81dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="440dp"
+        android:layout_width="169dp"
+        android:layout_height="89dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="444dp"
         android:backgroundTint="@color/purple_200"
         android:text="hard"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/easyImage"
+        android:layout_width="200dp"
+        android:layout_height="399dp"
+        android:layout_marginStart="192dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/easystructure" />
+
+    <ImageView
+        android:id="@+id/mediumImage"
+        android:layout_width="202dp"
+        android:layout_height="405dp"
+        android:layout_marginStart="180dp"
+        android:layout_marginTop="140dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mediumstructure" />
+
+    <ImageView
+        android:id="@+id/hardImage"
+        android:layout_width="163dp"
+        android:layout_height="379dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="300dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/hardstructure" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
