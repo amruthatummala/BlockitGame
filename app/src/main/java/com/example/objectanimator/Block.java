@@ -36,23 +36,13 @@ public class Block {// implements Parcelable {
         image.setImageDrawable(d);
         image.getLayoutParams().width = w;
         image.getLayoutParams().height = h;
-//        image.setMaxHeight(h);
-//        image.setMaxWidth(w);
 
-        //image.setScaleType(ImageView.ScaleType.FIT_START);
-
-        //Path p = new Path();
         defaultX = screenWidth/2;
         defaultY = screenHeight/2-500;
         x = defaultX;
         y = defaultY;
         image.setY(y);
         image.setX(x);
-        //p.moveTo(defaultX, defaultY);
-
-//        ConstraintLayout con = new ConstraintLayout(c);
-//        con.addView(image);
-//        con.setConstraintSet(new ConstraintSet());
     }
 
     public ImageView getImageView() {
@@ -99,8 +89,7 @@ public class Block {// implements Parcelable {
         x = x + dx;
         p.moveTo(x, y);
         p.rLineTo(dx, 0);
-        //image.setX(x);
-        //p.moveTo(x, y);
+
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "x", "y", p);
         objectAnimator.setDuration(animationTime);
@@ -114,8 +103,6 @@ public class Block {// implements Parcelable {
         x = x - dx;
         p.moveTo(x, y);
         p.rLineTo(-1*dx, 0);
-        //image.setX(x);
-        //p.moveTo(x, y);
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "x", "y", p);
         objectAnimator.setDuration(animationTime);
@@ -129,8 +116,6 @@ public class Block {// implements Parcelable {
         y = y - dy;
         p.moveTo(x, y);
         p.rLineTo(0, -1*dy);
-        //image.setY(y);
-        //p.moveTo(x, y);
 
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "x", "y", p);
@@ -145,15 +130,11 @@ public class Block {// implements Parcelable {
         y = y + dy;
         p.moveTo(x, y);
         p.rLineTo(0, dy);
-        //image.setY(y);
-        //p.moveTo(x, y);
 
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(image, "x", "y", p);
         objectAnimator.setDuration(animationTime);
-//        if (getWidth() > 500) {
-//            objectAnimator.setDuration(10);
-//        }
+
         objectAnimator.start();
 
     }

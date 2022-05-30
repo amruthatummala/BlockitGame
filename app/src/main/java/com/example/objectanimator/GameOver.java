@@ -49,6 +49,7 @@ public class GameOver extends AppCompatActivity {
             Block b7 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
             Block b8 = new Block(ContextCompat.getDrawable(this, R.drawable.purplesquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
             Block b9 = new Block(ContextCompat.getDrawable(this, R.drawable.redsquare), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+
             if (s.equals("mainEasy")) {
                 correctBlocks.add(b1);
                 correctBlocks.add(b2);
@@ -66,8 +67,6 @@ public class GameOver extends AppCompatActivity {
                 correctBlocks.add(b5);
                 correctBlocks.add(b6);
                 correctBlocks.add(b7);
-                correctBlocks.add(b8);
-                correctBlocks.add(b9);
             }
         }
 

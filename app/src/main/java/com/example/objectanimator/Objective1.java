@@ -54,9 +54,6 @@ public class Objective1 extends AppCompatActivity {
     //float platformHeight = screenHeight - 500;
     double platformHeight = tempScreenHeight - (3* 60 * Resources.getSystem().getDisplayMetrics().density); // 1669.0
 
-//    DisplayMetrics metrics = getWindowManager().getDefaultDisplay().getMetrics(metrics);
-//    float logicalDensity = metrics.density;
-//    int px = (int) (dp * logicalDensity + 0.5);
 
     float x = screenWidth / 2;
     float y = screenHeight / 2;
@@ -105,7 +102,6 @@ public class Objective1 extends AppCompatActivity {
         Block b4 = new Block(ContextCompat.getDrawable(this, R.drawable.blueblock), (int) (60 * getResources().getDisplayMetrics().density), (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
 
 
-
         ArrayList<Block> wrongBlocks = new ArrayList<>();
 
         ArrayList<Block> oldBlockList = new ArrayList<>();
@@ -120,8 +116,6 @@ public class Objective1 extends AppCompatActivity {
         oldBlockList.add(b7);
         oldBlockList.add(b8);
         oldBlockList.add(b9);
-        //oldBlockList.add(b4);
-
 
         ArrayList<Block> correctBlocks = new ArrayList<>();
         if (difficulty.equals("easy")) {
@@ -151,8 +145,9 @@ public class Objective1 extends AppCompatActivity {
             correctBlocks.add(b5);
             correctBlocks.add(b6);
             correctBlocks.add(b7);
-            correctBlocks.add(b8);
-            correctBlocks.add(b9);
+
+            wrongBlocks.add(b8);
+            wrongBlocks.add(b9);
         }
 
 
@@ -161,19 +156,6 @@ public class Objective1 extends AppCompatActivity {
         ConstraintLayout c = (ConstraintLayout) findViewById(R.id.objective1);
         c.addView(b.getImageView());
         c.setConstraintSet(new ConstraintSet());
-
-//        b.setX(x);
-//        b.setY(y);
-
-        //Path p = new Path();
-        //p.addCircle(500, 500, 200, Path.Direction.CCW);
-        //p.rMoveTo(10, 10);
-
-
-        //p.addCircle(500, 500, 200, Path.Direction.CCW);
-
-        //objectAnimator = ObjectAnimator.ofFloat(imageView, "x", "y", p);
-
 
         gyroscope.setListener(new Gyroscope.Listener() {
             @Override
@@ -203,25 +185,11 @@ public class Objective1 extends AppCompatActivity {
                         }
                         System.out.println("x is " + b.getX());
                         System.out.println("y is " +b.getY());
-//                        b.getY() < platformHeight + dy && b.getY() > platformHeight - dy &&
-//                                b.getX() < blackblockright.getX() +dx && b.getX() >
-//                                screenWidth-(yellowportalwidth+blackblockright.getX())
+
                         if (Math.abs(b.getY()-yellowportal.getY()) <= yellowportal.getHeight()/2+dy &&
                                 b.getX() < blackblockright.getX() +dx && b.getX() >
                                 yellowportal.getX()-dx) {
-//                            boolean found = false;
-//                            for (Block cb : correctBlocks) {
-//                                if (b.getImageView().getDrawable().equals(cb.getImageView().getDrawable())) {
-//                                    found = true;
-//                                }
-//                            }
-//                            if (!found) {
-//                                System.out.println("game over");
-//                                cancel();
-//                                gameOver();
-////                                Toast.makeText(Objective1&& b.getX() < blackblockright.getX() +dx && b.getX() > screenWidth-(yellowportalwidth+blackblockright.getX()).this, "Remember to only collect the blocks that you need to build the structure!"
-////                                , Toast.LENGTH_LONG).show();
-//                            } else {
+
                                 System.out.println("roses");
                                 b.reset();
                                 c.removeView(b.getImageView());
@@ -243,20 +211,7 @@ public class Objective1 extends AppCompatActivity {
                             //cancel();
                             // else if in line below
                         } if(b.getY() > 0 && b.getY() < blueportal.getHeight() && b.getX() > blackblocklefttop.getWidth() && b.getX() < screenWidth - (blackblockrighttop.getWidth()+blueportalwidth)) {
-//                            System.out.println("I touched the top");
-//                            boolean found = false;
-//                            for (Block cb : wrongBlocks) {
-//                                if (b.getImageView().getDrawable().equals(cb.getImageView().getDrawable())) {
-//                                    found = true;
-//                                }
-//                            }
-//                            if (!found) {
-//                                System.out.println("game over");
-//                                cancel();
-//                                gameOver();
-////                                Toast.makeText(Objective1&& b.getX() < blackblockright.getX() +dx && b.getX() > screenWidth-(yellowportalwidth+blackblockright.getX()).this, "Remember to only collect the blocks that you need to build the structure!"
-////                                , Toast.LENGTH_LONG).show();
-//                            } else {
+
                                 System.out.println("roses");
                                 c.removeView(b.getImageView());
                                 b.reset();
@@ -309,18 +264,7 @@ public class Objective1 extends AppCompatActivity {
                 } else {
                     gameOver();
                 }
-//                int correctCount = 0;
-//                for(Block cbl : correctBlocks){
-//                    for(Block nbl : newBlockList){
-//                        if(cbl.getImageView().getDrawable().equals(nbl.getImageView().getDrawable())){
-//                            correctCount++;
-//                        }
-//                    }
-//                }
-//                if(correctCount == correctBlocks.size()){
-//                    System.out.println("Roger that");
-//                    openObjective2();
-//                }
+
             }
         });
 

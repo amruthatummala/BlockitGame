@@ -1,5 +1,3 @@
-
-
 package com.example.objectanimator;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
     //boolean tiltedRight = false;
     float[] tiltVals = new float[2];
 
-    float angleChangeV = 1;
-    double angleChangeH = 0.6;
+    double angleChangeV = 1;
+    double angleChangeH = 0.3;
 
     //ArrayList<Block> blockPool;
 
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         b = blockPool.remove(0);
 
-        platform= new Block(ContextCompat.getDrawable(this, R.drawable.rectangle),(int) screenWidth , (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        platform = new Block(ContextCompat.getDrawable(this, R.drawable.rectangle), (int) screenWidth, (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         platform.setY(platformHeight);
 
         platform.setX(0);
@@ -87,12 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println("screenWidth is " + screenWidth); //1080.0
 
-        if (getIntent().getExtras() != null) {
-            Boolean retry = getIntent().getExtras().getBoolean("retry");
-            if (retry) {
-
-            }
-        }
 
         c.addView(platform.getImageView());
         c.addView(b.getImageView());
@@ -105,10 +98,9 @@ public class MainActivity extends AppCompatActivity {
             statusBarHeight = getResources().getDimensionPixelSize(resourceId);
         }
 
-        Block tempB= new Block(ContextCompat.getDrawable(this, R.drawable.rectangle),(int) screenWidth , (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
+        Block tempB = new Block(ContextCompat.getDrawable(this, R.drawable.rectangle), (int) screenWidth, (int) (60 * getResources().getDisplayMetrics().density), this, screenHeight, screenWidth);
         tempB.setX(0);
 
-        //   System.out.println("block width and height is " + blockPool.get(1).getWidth()); // 180
 
         placedBlocks.add(platform);
 
@@ -137,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (difficulty.equals("medium")) {
                     checkMedium();
-                } else {
+                }
+                if(difficulty.equals("hard")){
                     checkHard();
                 }
             }
@@ -159,77 +152,39 @@ public class MainActivity extends AppCompatActivity {
                         int size = placedBlocks.size();
                         System.out.println("size of placedBlocks is " + size);
                         System.out.println("placedBlocks: " + placedBlocks);
-//                        for (int i = 0; i < size; i++) {
-//                            Block b1 = placedBlocks.get(i);
-//                            if(b.stackBlock(b1, errorMargin, dy)) {
-//                                System.out.println("successfully stacked block");
-////                                cancel();
-//                                placedBlocks.add(0, b);
-//                                //blockPool.remove(0);
-//                                if (blockPool.size() > 0) {
-//                                    b = blockPool.remove(0);
-//                                    c.addView(b.getImageView());
-//                                } else {
-//                                    cancel();
-//                                }
-//                                checkPlatform = false;
-//                                //cancel();
-//                                break;
-//
-//                            }
-//                        }
-                        System.out.println("x is " + b.getX());
-                        System.out.println("y is " +b.getY());
 
-                        if (checkPlatform){ // else if
+                        System.out.println("x is " + b.getX());
+                        System.out.println("y is " + b.getY());
+
+                        if (checkPlatform) { // else if
                             float rx = tiltVals[0];
                             float ry = tiltVals[1];
                             if (ry > angleChangeV) {
-                                Block temp = findMatchingBlock((int) b.getX()+dx,(int) b.getY());
+                                Block temp = findMatchingBlock((int) b.getX() + dx, (int) b.getY());
                                 if (temp == null) {
                                     b.moveRight(dx);
                                     System.out.println("christmas");
-//                                } else {
-//                                    System.out.println("should stack");
-//                                    b.setX(temp.getX()-b.getWidth());
-//                                    placedBlocks.add(0, b);
-//                                    if (blockPool.size() > 0) {
-//                                        b = blockPool.remove(0);
-//                                        c.addView(b.getImageView());
-//                                    } else {
-//                                        cancel();
-//                                    }
+
                                 }
 
                             }
-                            if (ry < -1*angleChangeV) {
-                                Block temp = findMatchingBlock((int) b.getX()-dx,(int) b.getY());
+                            if (ry < -1 * angleChangeV) {
+                                Block temp = findMatchingBlock((int) b.getX() - dx, (int) b.getY());
                                 if (temp == null) {
                                     b.moveLeft(dx);
                                     System.out.println("christmas");
-//                                } else {
-//                                    System.out.println("should stack");
-//                                    b.setX(temp.getX()-temp.getWidth());
-//                                    placedBlocks.add(0, b);
-//                                    if (blockPool.size() > 0) {
-//                                        b = blockPool.remove(0);
-//                                        c.addView(b.getImageView());
-//                                    } else {
-//                                        cancel();
-//                                    }
+
                                 }
                             }
                             if (rx > angleChangeH) {
-                                Block temp = findMatchingBlock((int) b.getX(),(int) b.getY()-dy);
+                                Block temp = findMatchingBlock((int) b.getX(), (int) b.getY() - dy);
                                 if (temp == null) {
                                     b.moveDown(dy);
                                     System.out.println("christmas");
                                 } else {
                                     System.out.println("should stack");
-                                    b.setY(temp.getY()-b.getHeight());
-//                                    if (temp.getWidth() > 500) {
-//                                        b.setY(temp.getY()-b.getHeight()/2);
-//                                    }
+                                    b.setY(temp.getY() - b.getHeight());
+
                                     placedBlocks.add(0, b);
                                     if (blockPool.size() > 0) {
                                         b = blockPool.remove(0);
@@ -239,21 +194,12 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                             }
-                            if (rx < -1*angleChangeH) {
-                                Block temp = findMatchingBlock((int) b.getX(),(int) b.getY()+dy);
+                            if (rx < -1 * angleChangeH) {
+                                Block temp = findMatchingBlock((int) b.getX(), (int) b.getY() + dy);
                                 if (temp == null) {
                                     b.moveUp(dy);
                                     System.out.println("christmas");
-//                                } else {
-//                                    System.out.println("should stack");
-//                                    b.setY(temp.getY()-b.getHeight());
-//                                    placedBlocks.add(0, b);
-//                                    if (blockPool.size() > 0) {
-//                                        b = blockPool.remove(0);
-//                                        c.addView(b.getImageView());
-//                                    } else {
-//                                        cancel();
-//                                    }
+
                                 }
                             }
                         }
@@ -268,13 +214,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     public Block findMatchingBlock(int x, int y) {
-        for (int i = 0; i < placedBlocks.size()-1; i++) {
+        for (int i = 0; i < placedBlocks.size() - 1; i++) {
             Block temp = placedBlocks.get(i);
-            //temp.getX() <= x && x <= temp.getX()+temp.getWidth()
 
-            //temp.getX() <= x && x <= temp.getX()+temp.getWidth() &&
-            //            temp.getY()-temp.getHeight()/2 <= y && y <= temp.getY()/2 + temp.getHeight()/2
-            if ( Math.abs(temp.getX()-x) < temp.getWidth()  &&
+            if (Math.abs(temp.getX() - x) < temp.getWidth() &&
                     Math.abs(y - temp.getY()) < temp.getHeight()) {
                 System.out.println("ambrosia");
                 return temp;
@@ -292,8 +235,8 @@ public class MainActivity extends AppCompatActivity {
 
     public Block findFirstBlock(int startX) {
         if (placedBlocks.size() > 1) {
-            for (int x = startX+1; x < screenWidth; x+=40) {
-                Block temp = findMatchingBlock(x, (int) placedBlocks.get(placedBlocks.size()-2).getY());
+            for (int x = startX + 1; x < screenWidth; x += 40) {
+                Block temp = findMatchingBlock(x, (int) placedBlocks.get(placedBlocks.size() - 2).getY());
                 if (temp != null) {
                     return temp;
                 }
@@ -306,14 +249,13 @@ public class MainActivity extends AppCompatActivity {
     public void checkEasy() {
         boolean correct = false;
         Block firstBlock = findFirstBlock(0);
-//        System.out.println("firstBlock x: " + firstBlock.getX());
-//        System.out.println("firstBlock y: " + firstBlock.getY());
+
         if (firstBlock != null) {
             Block secondBlock = findMatchingBlock((int) firstBlock.getX() + firstBlock.getWidth() + dx, (int) firstBlock.getY());
             Block thirdBlock = findMatchingBlock((int) firstBlock.getX(), (int) firstBlock.getY() - firstBlock.getHeight() - dy);
             if (secondBlock != null && Math.abs(secondBlock.getX() - firstBlock.getX()) <= firstBlock.getWidth() + dx) {
                 if (thirdBlock != null && Math.abs(thirdBlock.getY() - firstBlock.getY()) <= firstBlock.getHeight() + dy &&
-                        Math.abs(thirdBlock.getX() - firstBlock.getX()) <= 7*dx) {
+                        Math.abs(thirdBlock.getX() - firstBlock.getX()) <= 7 * dx) {
                     System.out.println("coral reef");
                     correct = true;
                 }
@@ -332,33 +274,25 @@ public class MainActivity extends AppCompatActivity {
         boolean correct = false;
         Block firstBlock = findFirstBlock(0);
         if (firstBlock != null) {
-            Block secondBlock = findMatchingBlock((int) firstBlock.getX()+firstBlock.getWidth()+dx, //+dx
+            Block secondBlock = findMatchingBlock((int) firstBlock.getX() + firstBlock.getWidth() + dx, //+dx
                     (int) firstBlock.getY());
             Block fourthBlock = findMatchingBlock((int) firstBlock.getX(),
-                    (int) firstBlock.getY()-firstBlock.getHeight()-dy);
-            float x = firstBlock.getY()+firstBlock.getHeight()+dy;
+                    (int) firstBlock.getY() - firstBlock.getHeight() - dy);
+            float x = firstBlock.getY() + firstBlock.getHeight() + dy;
             System.out.println("the y for fourthBlock is " + x);
             System.out.println("firstBlock is not null");
-            if (secondBlock != null && Math.abs(secondBlock.getX()-firstBlock.getX()) <= firstBlock.getWidth()+3*dx) {
-                Block thirdBlock = findMatchingBlock((int) secondBlock.getX()+secondBlock.getWidth()+dx,//+dx
+            if (secondBlock != null && Math.abs(secondBlock.getX() - firstBlock.getX()) <= firstBlock.getWidth() + 3 * dx) {
+                Block thirdBlock = findMatchingBlock((int) secondBlock.getX() + secondBlock.getWidth() + dx,//+dx
                         (int) secondBlock.getY());
                 System.out.println("cats");
-                if (thirdBlock != null && Math.abs(thirdBlock.getX()-secondBlock.getX()) <= secondBlock.getWidth()+3*dx) {
+                if (thirdBlock != null && Math.abs(thirdBlock.getX() - secondBlock.getX()) <= secondBlock.getWidth() + 3 * dx) {
                     Block fifthBlock = findMatchingBlock((int) thirdBlock.getX(), //+dx
-                            (int) thirdBlock.getY()-thirdBlock.getHeight()-dy);
-                    System.out.println("dogs");
-                    System.out.println("fifthBlock is " + fifthBlock);
-                    System.out.println("fourthBlock is " + fourthBlock);
-                    System.out.println((fifthBlock.getX()-thirdBlock.getX()) + " is fifth x - third x");
-                    System.out.println((fourthBlock.getX()-firstBlock.getX()) + " is fourth x - first x");
-                    System.out.println((fourthBlock.getY()-firstBlock.getY()) + " is fourth y - first y");
-                    System.out.println((fifthBlock.getY()-thirdBlock.getY()) + " is fifth y - third y");
-                    System.out.println("** placedBlocks is " + placedBlocks);
+                            (int) thirdBlock.getY() - thirdBlock.getHeight() - dy);
                     if (fifthBlock != null && fourthBlock != null &&
-                            Math.abs(fifthBlock.getX()-thirdBlock.getX()) <= 7*dx &&
-                            Math.abs(fourthBlock.getX()-firstBlock.getX()) <= 7*dx &&
-                            Math.abs(fourthBlock.getY()-firstBlock.getY()) <= firstBlock.getHeight()+dy &&
-                            Math.abs(fifthBlock.getY()-thirdBlock.getY()) <= thirdBlock.getHeight()+dy) {
+                            Math.abs(fifthBlock.getX() - thirdBlock.getX()) <= 7 * dx &&
+                            Math.abs(fourthBlock.getX() - firstBlock.getX()) <= 7 * dx &&
+                            Math.abs(fourthBlock.getY() - firstBlock.getY()) <= firstBlock.getHeight() + dy &&
+                            Math.abs(fifthBlock.getY() - thirdBlock.getY()) <= thirdBlock.getHeight() + dy) {
                         System.out.println("sea turtles");
                         correct = true;
                     }
@@ -373,20 +307,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     public void checkHard() {
+        System.out.println("Hard platform is " + platform);
+        boolean correct = false;
+        Block firstBlock = findFirstBlock(0);
+        if(firstBlock != null){
+            System.out.println("FIRST DOWN");
+            Block secondBlock = findMatchingBlock((int) firstBlock.getX() + firstBlock.getWidth() + dx, //+dx
+                    (int) firstBlock.getY());
+            if(secondBlock != null && Math.abs(secondBlock.getX() - firstBlock.getX()) <= firstBlock.getWidth() + 3 * dx){
+                System.out.println("SECOND DOWN");
+                Block thirdBlock = findMatchingBlock((int) secondBlock.getX() + secondBlock.getWidth() + dx, //+dx
+                        (int) secondBlock.getY());
+                Block fourthBlock = findMatchingBlock((int) secondBlock.getX(),
+                        (int) secondBlock.getY() - secondBlock.getHeight() - dy);
+                if(thirdBlock != null && Math.abs(fourthBlock.getX() - secondBlock.getX()) <= 7 * dx &&
+                        Math.abs(fourthBlock.getY() - secondBlock.getY()) <= secondBlock.getHeight() + dy &&
+                        Math.abs(secondBlock.getX() - thirdBlock.getX()) <= thirdBlock.getWidth() + 3 * dx){
+                    System.out.println("THIRD DOWN");
+                    Block fifthBlock = findMatchingBlock((int) thirdBlock.getX() + dx,
+                            (int) thirdBlock.getY() - thirdBlock.getHeight());
+                    if(fifthBlock != null && Math.abs(fifthBlock.getX() - thirdBlock.getX()) <= 7 * dx &&
+                            Math.abs(fifthBlock.getY() - thirdBlock.getY()) <= thirdBlock.getHeight() + dy){
+                        System.out.println("FOURTH DOWN");
+                        Block sixthBlock = findMatchingBlock((int) fifthBlock.getX(),
+                                (int) fifthBlock.getY() - fifthBlock.getHeight() - dy);
+                        if(sixthBlock != null && Math.abs(fifthBlock.getX() - sixthBlock.getX()) <= 7 * dx &&
+                                Math.abs(fifthBlock.getY() - sixthBlock.getY()) <= sixthBlock.getHeight() + dy){
+                            System.out.println("Fifth down WOWWWW");
+                            correct = true;
+                        }
+                    }
 
-    }
-
-    public boolean containsBlock(int x, int y) {
-        for (int i = 0; i < placedBlocks.size()-2; i++) {
-            if (Math.abs((int) placedBlocks.get(i).getY()-y) <= 70
-                    && Math.abs((int) placedBlocks.get(i).getX()-x) <= 70) {
-                return true;
+                }
             }
         }
-        return false;
+
+        if (correct) {
+            goToVictory();
+        } else {
+            goToGameOver();
+        }
     }
+
 
 
     @Override
