@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class Objective1 extends AppCompatActivity {
     ImageView imageView;
     GameInfo temp = new GameInfo();
     String difficulty;
+    int count = 0;
     //Block b;
     ObjectAnimator objectAnimator;
     //Path p;
@@ -54,6 +56,9 @@ public class Objective1 extends AppCompatActivity {
     //float platformHeight = screenHeight - 500;
     double platformHeight = tempScreenHeight - (3* 60 * Resources.getSystem().getDisplayMetrics().density); // 1669.0
 
+//    DisplayMetrics metrics = getWindowManager().getDefaultDisplay().getMetrics(metrics);
+//    float logicalDensity = metrics.density;
+//    int px = (int) (dp * logicalDensity + 0.5);
 
     float x = screenWidth / 2;
     float y = screenHeight / 2;
@@ -77,6 +82,12 @@ public class Objective1 extends AppCompatActivity {
         ImageView blackblockright = (ImageView) findViewById(R.id.blacksquareright);
         ImageView blackblockleft = (ImageView) findViewById(R.id.blacksquareleft);
         ImageView yellowportal = (ImageView) findViewById(R.id.yellowportal);
+
+        TextView needBlocks = (TextView) findViewById(R.id.blocksNeeded);
+
+        TextView blockCounter = (TextView) findViewById(R.id.blockcounter);
+        blockCounter.setText("Block count: " + count);
+
         double yellowportalwidth = yellowportal.getWidth();
 
         //Top part/portal
@@ -128,6 +139,8 @@ public class Objective1 extends AppCompatActivity {
             wrongBlocks.add(b7);
             wrongBlocks.add(b8);
             wrongBlocks.add(b9);
+
+            needBlocks.setText("You need 3 blocks");
         } else if (difficulty.equals("medium")) {
             correctBlocks.add(b1);
             correctBlocks.add(b2);
@@ -138,6 +151,8 @@ public class Objective1 extends AppCompatActivity {
             wrongBlocks.add(b7);
             wrongBlocks.add(b8);
             wrongBlocks.add(b9);
+
+            needBlocks.setText("You need 5 blocks");
         } else if (difficulty.equals("hard")) {
             correctBlocks.add(b1);
             correctBlocks.add(b2);
@@ -148,6 +163,8 @@ public class Objective1 extends AppCompatActivity {
 
             wrongBlocks.add(b8);
             wrongBlocks.add(b9);
+
+            needBlocks.setText("You need 6 blocks");
         }
 
 
@@ -194,6 +211,8 @@ public class Objective1 extends AppCompatActivity {
                                 b.reset();
                                 c.removeView(b.getImageView());
                                 newBlockList.add(b);
+                                count++;
+                                blockCounter.setText("Block count: " + count);
                                 oldBlockList.remove(0);
                                 System.out.println("idk");
                                 System.out.println("Added block to newBlockList");
